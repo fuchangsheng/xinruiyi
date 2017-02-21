@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>系统-系统设置</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='系统 > 系统设置';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">系统设置</div>
+                    </div>
+                    <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">网站名称：</th>
+                                <td><input name="data[webname]" type="text" value="{$Think.config.webname}" class="input"  style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">站点根网址：</th>
+                                <td><input name="data[basehost]" type="text" value="{$Think.config.basehost}" class="input"  style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">欢迎短语：</th>
+                                <td><input name="data[welcomes]" type="text" value="{$Think.config.welcomes}" class="input"  style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">首页标题：</th>
+                                <td><input name="data[indexname]" type="text" value="{$Think.config.indexname}" class="input"  style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">首页地址：</th>
+                                <td><input name="data[indexurl]" type="text" value="{$Think.config.indexurl}" class="input"  style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">首页关键词：</th>
+                                <td><input name="data[keywords]" type="text" value="{$Think.config.keywords}" class="input" style="width:240px;" /></td>
+                            </tr>
+
+                            <tr>
+                                <th>热门关键词：</th>
+                                <td><textarea name="data[hot_keywords]" rows="5" cols="57">{$Think.config.hot_keywords}</textarea></td>
+                            </tr>
+                            <tr>
+                                <th>首页描述：</th>
+                                <td><textarea name="data[description]" rows="5" cols="57">{$Think.config.description}</textarea></td>
+                            </tr>
+
+                            <tr>
+                                <th width="120">备案信息：</th>
+                                <td><input name="data[icpno]" type="text" value="{$Think.config.icpno}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th>版权信息：</th>
+                                <td><textarea name="data[powerby]" rows="5" cols="57">{$Think.config.powerby}</textarea></td>
+                            </tr>
+                        </table>
+
+
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">站点开关：</th>
+                                <td>
+                                    <select name="data[site_switch]" id="site_switch">
+                                        <option value="1" <eq name="Think.config.site_switch" value="1"> selected=""  </eq> >开启</option>
+                                        <option value="0" <eq name="Think.config.site_switch" value="0"> selected=""  </eq> >关闭</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="120">前台调试：</th>
+                                <td>
+                                    <select name="home_debug" id="home_debug">
+                                        <option value="true" <eq name="home_debug_status" value="true"> selected=""  </eq> >开启</option>
+                                        <option value="false" <eq name="home_debug_status" value="false"> selected=""  </eq> >关闭</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="120">后台调试：</th>
+                                <td>
+                                    <select name="admin_debug" id="admin_debug">
+                                        <option value="true" <eq name="admin_debug_status" value="true"> selected=""  </eq> >开启</option>
+                                        <option value="false" <eq name="admin_debug_status" value="false"> selected=""  </eq> >关闭</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="120">开发模式：</th>
+                                <td>
+                                    <select name="development_mode" id="development_mode">
+                                        <option value="true" <eq name="home_debug_status" value="true"> selected=""  </eq> >启动</option>
+                                        <option value="false" <eq name="home_debug_status" value="false"> selected=""  </eq> >关闭</option>
+                                    </select>
+                                    <span class="red">（网站正常运营以后建议关闭）</span>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </form>
+
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+</body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+        return false;
+    });
+
+
+    $("#home_debug").change(function(event) {
+        /* Act on the event */
+        var status = $(this).val();
+        $.get('__CONTROLLER__/change_index_debug/status/'+status);
+    });
+
+    $("#admin_debug").change(function(event) {
+        /* Act on the event */
+        var status = $(this).val();
+        $.get('__CONTROLLER__/change_admin_debug/status/'+status);
+    });
+
+    $("#development_mode").change(function(event) {
+        /* Act on the event */
+        var status = $(this).val();
+        $.get("__CONTROLLER__/development_mode/", { status: status}, function(data){
+            $("#home_debug").attr("value",status);
+            $("#admin_debug").attr("value",status);
+
+        });
+    });
+
+})
+
+</script>

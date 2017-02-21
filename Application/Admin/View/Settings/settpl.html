@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>模板管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='LOGO > 模板管理';
+</php>
+<include file="Common/intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common/head" />
+        <div class="mainBody"> <include file="Common/left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">模板管理</div>
+                    </div>
+                    <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">模板列表：</th>
+                                <td >
+                                    <select name="themes" id="themes">
+                                        <volist name="folder_list" id="vo">
+                                        <option value="{$vo}" <eq name="vo" value="$home_config['DEFAULT_THEME']"> selected=""  </eq> >{$vo}</option>
+                                        </volist>
+                                    </select>
+                                </td>
+                            </tr>
+
+
+                        </table>
+                    </form>
+                    <!-- <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+        return false;
+    });
+
+$("#themes").change(function(){
+    var themes = $(this).val();
+    $.post("__MODULE__/settings/settpl", { act: 'set', themes: themes});
+})
+</script>
+</body>
+</html>

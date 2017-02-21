@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统配置-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='板块管理 > 系统配置';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">配置管理</div>
+            </div>
+            <form action="" method="post" id="quickForm">
+                <b>添加配置：</b>
+                <input type="hidden" name="act" value="add" /> &nbsp;
+                <select name="groupid">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>  &nbsp;
+                <input placeholder="键" id="newName" class="input" type="text" name="data[controller]" value="" style="width:180px;" /> &nbsp;
+                <input placeholder="值" id="newName" class="input" type="text" name="data[action]" value="" style="width:180px;" /> &nbsp;
+                <input placeholder="备注" id="newName" class="input" type="text" name="data[name]" value="" /> &nbsp;
+                <input placeholder="排序" id="newName" class="input" type="text" name="data[sort]" value="" style="width:30px;" /> &nbsp;
+                <button class="btn quickSubmit">确定添加</button>
+                <button class="btn updateCache">刷新页面</button>
+            </form>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab">
+                <thead>
+                    <tr align="center">
+                        <td width="5%">id</td>
+                        <td width="10%" align="left">键</td>
+                        <td width="10%" align="left">值</td>
+                        <td width="20%">备注</td>
+                        <td width="40">分组</td>
+                        <td width="10%">类型</td>
+
+                        <td width="30">排序</td>
+                        <td width="30">状态</td>
+                        <td width="10%">操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="val">
+                        <tr class="list" pid="{$val.pid}" id="{$val.id}">
+                            <input type="hidden" name="id" value="{$val.id}"/>
+                            <td align="center">{$val.id}</td>
+                            <td><input type="text" value="{$val.varname}" name="varname" class="input" placeholder="键" style="width:180px;"/> </td>
+                            <td><input type="text" value="{$val.value}" name="value" class="input" placeholder="值" style="width:180px;"/> </td>
+                            <td><input type="text" value="{$val.info}" name="info" class="input" placeholder="备注" style="width:180px;"/></td>
+                            <td >
+                                <label><input class="groupid" name="groupid[{$val.id}]" type="radio" value="1" {$val['group_on'][1]} ></label>
+                                <label><input class="groupid" name="groupid[{$val.id}]" type="radio" value="2" {$val['group_on'][2]}></label>
+                                <label><input class="groupid" name="groupid[{$val.id}]" type="radio" value="3" {$val['group_on'][3]}></label>
+                                <label><input class="groupid" name="groupid[{$val.id}]" type="radio" value="4" {$val['group_on'][4]}></label>
+                            </td>
+                            <td ><input type="text" value="{$val.type}" name="type" class="input" placeholder="配置名称" style="width:80px;"/></td>
+                            <td >
+                                <input type="text" value="{$val.sort}" name="sort" class="input" placeholder="排序" style="width:30px; text-align:center; "/>
+                            </td>
+                            <td align="center" width="10%"> <span class="cursor status" name="{$val.id}">{$val['status']==1?'显示':'隐藏'}</span></td>
+                            <td align="center" width="10%"><button class="btn opCat">确定</button></td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<form action="" method="POST" id="opForm">
+    <input id="act" type="hidden" name="act" value="act" />
+    <input id="id" type="hidden" name="data[id]" />
+    <input id="groupid" type="hidden" name="data[groupid]" />
+    <input id="varname" type="hidden" name="data[varname]" />
+    <input id="value" type="hidden" name="data[value]" />
+    <input id="info" type="hidden" name="data[info]" />
+    <input id="sort" type="hidden" name="data[sort]" />
+
+
+</form>
+<div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        $(".opCat").click(function(){
+            var obj=$(this).parents("tr");
+            $("#act").val('edit');
+            $("#id").val(obj.find("input[name='id']").val());
+            $("#groupid").val(obj.find(".groupid").filter(':checked').val());
+            $("#varname").val(obj.find("input[name='varname']").val());
+            $("#value").val(obj.find("input[name='value']").val());
+            $("#info").val(obj.find("input[name='info']").val());
+            $("#sort").val(obj.find("input[name='sort']").val());
+            commonAjaxSubmit("","#opForm");
+        });
+
+        $(".quickSubmit").click(function(){
+            if($("#newName").val()==''){
+                popup.alert("配置名称不能为空滴！");
+                return false;
+            }
+            commonAjaxSubmit("","#quickForm");
+            return false;
+        });
+
+        $(".updateCache").click(function(){
+            location.reload();
+            /*$.get("__MODULE__/cache/cacheAdminMenu", { name: "John", time: "2pm" },
+              function(data){
+                popup.alert("更新成功！");
+              });*/
+            return false;
+        })
+
+        $(".tree").click(function(){
+            if($(this).attr("status")!=1){
+                chn($(this).parent().attr("id"),"hide");
+                $(this).attr("status",1);
+            }else{
+                chn($(this).parent().attr("id"),"show");
+                $(this).removeAttr("status");
+            }
+        });
+
+
+        $("#shrink").click(function(){
+            $(".list").each(function(index, el) {
+                var pid = $(this).attr('pid');
+                if(pid>0){
+                    $(this).toggle();
+                }
+            });
+        });
+
+        $(".status").each(function(index, el) {
+            var text = $(this).text();
+            if(text=='显示'){
+                $(this).addClass('blue');
+            }else{
+                $(this).addClass('red');
+            }
+        });
+
+        $(".status").click(function(event) {
+            var text = $(this).text();
+            var id = $(this).attr('name');
+            var status;
+            if(text=='显示'){
+                status = 0;
+                var text = '隐藏';
+                var style = 'red';
+            }else{
+                status = 1;
+                var text = '显示';
+                var style = 'blue';
+            }
+            $(this).text(text);
+            $(this).attr('name',status);
+            $(this).toggleClass('red');
+            $(this).toggleClass('blue');
+            $(this).addClass(style);
+
+            $.post("__MODULE__/settings/sysconfig", { act: 'status', id: id, status: status});
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<link href="favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/metinfo_ui.css" id="metuimodule" data-module="10001" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/metinfo.css" />
+<script src="__STATIC__/js/jquery1.7.2.js" type="text/javascript"></script>
+<script src="__STATIC__/js/metinfo_ui.js" type="text/javascript"></script>
+<script src="__STATIC__/js/ch.js" type="text/javascript"></script>
+<!--[if IE]>
+<script src="__STATIC__/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+</head>
+<script src="__STATIC__/js/slide.js" type="text/javascript"></script>
+<script type="text/javascript" src="__STATIC__/js/picshow.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 165) {
+                if (!$("nav").hasClass("navfix")) {
+                    $("nav").addClass("navfix");
+                }
+            }
+            if ($(window).scrollTop() < 165) {
+                $("nav").removeClass("navfix");
+            }
+        })
+    });
+</script>

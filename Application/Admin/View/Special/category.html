@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>分类管理-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='分类管理 > 分类列表';
+        </php>
+        <include file="Common:intohead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">分类列表</div>
+                        <div class="" ><a href="{:U('special/addcategory')}">添加分类</a></div>
+                    </div>
+
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                           	 	<td width="50">ID</td>
+                                <td width="300">名称</td>
+                                <td width="120">缩略图</td>
+                                <td width="80">排序</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="list-{$vo.id}">
+                                <td>{$vo.id}</td>
+                                <td >{$vo.name}</td>
+                                <td><a href="{$vo['thumb']}" target="_blank"><img src="{$vo['thumb']}" height="30"></a></td>
+                                <td>{$vo['sort']}</td>
+                                <td>
+                                    [ <a href="__URL__/addcategory?id={$vo.id}">编辑 </a> ]
+                                    [ <a link="__URL__/delcategory?id={$vo.id}" class="del" href="" name="{$vo.id}">删除 </a> ]
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="commonBtnArea">
+                    	<div style="float:right;">
+                        	{$page}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+    </body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+	$(".del").click(function(){
+        var delLink=$(this).attr("link");
+		var id=$(this).attr("name");
+		popup.confirm('你确定删除该数据吗?','温馨提示',function(action){
+			if(action == 'ok'){
+				$.get(delLink, function(data) {
+                    if(data.status==1){
+                        popup.success(data.info);
+                        $("#list-"+id).fadeOut("slow");
+                    }else{
+                        popup.error(data.info);
+                    }
+
+                });
+			}
+		});
+        return false;
+    });
+});
+
+</script>

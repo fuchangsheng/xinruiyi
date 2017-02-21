@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>广告-广告管理-{$site.SITE_INFO.name}</title>
+<include file="Common:intohead" />
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='广告管理 > 广告';
+</php>
+<style type="text/css">
+.text-left{ padding-left: 10px; text-align: left;}
+</style>
+</head>
+<body>
+<div class="wrap"> <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">广告列表</div>
+                <div><a href="__CONTROLLER__/add">添加广告</a></div>
+            </div>
+            <form action="" method="GET" id="searchForm">
+                <b>选择广告位：</b>
+                <select name="place" onchange="searchForm.submit()">
+                    <option value="0">所有广告位</option>
+                    <volist name="place_list" id="vo">
+                        <option value="{$vo.id}" <if condition="$vo.id eq $_GET['place']"> selected="selected" </if> />({$vo.id}){$vo.name}</option>
+                    </volist>
+                </select>  &nbsp;
+                <input placeholder="请输入关键词" id="keyword" class="input" type="text" name="keyword" value="{$Think.get.keyword}" /> &nbsp;
+                <button class="btn quickSubmit">搜索</button>
+            </form>
+            <form action="" method="POST" id="myform">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                    <thead>
+                        <tr>
+                            <td width="20">ID</td>
+                            <td>广告位</td>
+                            <td>广告名称</td>
+                            <td>缩略图</td>
+                            <td>类型</td>
+                            <td>URL</td>
+                            <td>备注</td>
+                            <td width="100">排序</td>
+                            <td>状态</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <volist name="list" id="vo" key="k">
+                        <tr align="center" id="{$vo.id}">
+                            <td>{$vo.id}</td>
+                            <td >{$vo.placename}</td>
+                            <td class="text-left">{$vo.name}</td>
+
+                            <eq name="vo.file_type" value="2">
+                                <td><a href="{$vo.file}" target="_blank"><embed style="padding: 0px;  height:26px; width:126px"  src="{$vo.file}" type=application/x-shockwave-flash wmode="transparent" quality="high"></embed></a></td>
+                            <else />
+                                <td><a href="{$vo.file}" target="_blank"><img src="{$vo.file}" width="126" height="26"></a></td>
+                            </eq>
+
+                            <td>{$vo['file_type']==1?'IMAGES':'FLASH'}</td>
+                            <td class="text-left">{$vo.url}</td>
+                            <td width="240" class="text-left">{$vo.remark|cut=26}</td>
+                            <td><input type="text" name="table[{$vo.id}]" value="{$vo.sort}" class="input text-c" size="3" /></td>
+                            <td>{$vo.status}</td>
+                            <td>
+
+                                [ <a href="__CONTROLLER__/add?id={$vo.id}">编辑 </a> ]
+                                [ <a link="#" id="{$vo.id}" href="javascript:void(0)" name="{$vo.title}" class="del">删除 </a> ]
+                            </td>
+                        </tr>
+                    </volist>
+                </table>
+            </form>
+            <div class="commonBtnArea" >
+                <button class="btn submit">更新排序</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        //快捷启用禁用操作
+        /*$(".opStatus").click(function(){
+            var obj=$(this);
+            var id=$(this).parents("tr").attr("id");
+            var status=$(this).attr("val");
+            $.getJSON("__URL__/opRoleStatus", { id:id, status:status }, function(json){
+                if(json.status==1){
+                    popup.success(json.info);
+                    $(obj).attr("val",json.data.status).html(status==1?"启用":"禁用").parents("td").prev().html(status==1?"禁用":"启用");
+                }else{
+                    popup.alert(json.info);
+                }
+            });
+        });*/
+    });
+</script>
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+    //clickCheckbox();
+    $(".submit").click(function(){
+        commonAjaxSubmit('',"#myform");
+    })
+
+    $(".del").click(function(){
+
+        var id = $(this).attr('id');
+        popup.confirm('您确定要删除所选数据吗?','温馨提示',function(action){
+            if(action == 'ok'){
+                $.get("__CONTROLLER__/del/id/"+id, function(data) {
+                    if(data.status==1){
+                        popup.success(data.info);
+                        $('#'+id).fadeOut("slow");
+                    }else{
+                        popup.alert(data.info);
+                    }
+                });
+            }
+        });
+        return false;
+    });
+});
+</script>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>专题管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='专题管理 > 专题列表';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">专题列表</div>
+            </div>
+            <form action="" method="GET" id="searchForm">
+                <b>选择分类：</b>
+                <input placeholder="请输入关键词" id="keyword" class="input" type="text" name="keyword" value="{$Think.get.keyword}" /> &nbsp;
+                <button class="btn quickSubmit">搜索</button>
+            </form>
+
+            <form action="" method="POST" id="myform">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                    <thead>
+                        <tr>
+                       	 	<td width="50"><label><input name="" class="chooseAll" type="checkbox"> 全选</label></td>
+                            <td width="100">分类</td>
+                            <td width="300">专题标题</td>
+                            <td width="120">单位</td>
+                            <td width="100">作者</td>
+                            <td width="160">更新时间</td>
+                            <td width="50">状态</td>
+                            <td width="150">操作</td>
+                        </tr>
+                    </thead>
+                    <volist name="list" id="vo">
+                        <tr align="center" id="{$vo.id}">
+                        	<td><input name="ids[]" value="{$vo.id}" type="checkbox"></td>
+                            <td>{$vo.category_id|get_special_info='name'}</td>
+                            <td align="left">
+                                <a href="/special/show-{$vo.id}.html" target="_blank">{$vo.title}</a>
+                                <notempty name="vo.thumb"><span class='red'>[图]</span></notempty>
+                                <eq name="vo.h" value="1"><span class='violet'>[热门]</span></eq>
+                                <eq name="vo.r" value="1"><span class='cyan'>[推荐]</span></eq>
+                                <eq name="vo.t" value="1"><span class='red'>[置顶]</span></eq>
+                            </td>
+                            <td>{$vo.company}</td>
+                            <td>{$vo.user_id|getAdminInfo='username'}</td>
+                            <td>{$vo.update_time|date="Y-m-d H:i:s",###}</td>
+                            <td>{$vo['status']|checkArr}</td>
+                            <td>
+                                [ <a href="__URL__/add?id={$vo.id}">编辑 </a> ]
+                                <eq name="vo.status" value="1">
+                                    [ <a onclick="AsyncBox_Adapter('uploadimage','__MODULE__/special/shenhe/id/{$vo.id}',900,600);" href="javascript:void(0)" target="_self">取消审核</a> ]
+                                <else />
+                                    [ <a onclick="AsyncBox_Adapter('uploadimage','__MODULE__/special/shenhe/id/{$vo.id}',900,600);" href="javascript:void(0)" target="_self">审核专题</a> ]
+                                </eq>
+                                <!-- [ <a link="{:U('Special/del/',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.title}" class="del">删除 </a> ] -->
+                            </td>
+                        </tr>
+                    </volist>
+                </table>
+            </form>
+            <div class="commonBtnArea">
+            	<button class="btn submit">删除所选</button>
+                <div style="float:right;">
+                    {$page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Common:foot" />
+</body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+    $(".del").click(function(){
+    	var delLink=$(this).attr("link");
+    	popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+    		if(action == 'ok'){
+    			top.window.location.href=delLink;
+    		}
+    	});
+        return false;
+    });
+
+    $(".submit").click(function(){
+        if($(".tab input[type='checkbox']:checked").size()==0){
+            popup.alert("请选择你所要删除的专题");
+            return false;
+        }
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }else{
+            $(this).attr("disabledSubmit",true).html("提交处理中...");
+            commonAjaxSubmit("__CONTROLLER__/del",'#myform');
+            return false;
+        }
+    });
+});
+
+
+function AsyncBox_Adapter(id,url,width,height){
+　  asyncbox.open({
+        id : id,
+        title : ' ',
+        url : url,
+        width : width,
+        height : height,
+        buttons : [{
+            value    : '关闭',                  //按钮文本
+            result  : 'ok'             //按钮 result 值，用于按钮事件触发 唯一
+        },{
+            value    : '取消',                  //按钮文本
+            result  : 'new_btn_2'             //按钮 result 值，用于按钮事件触发 唯一
+        }],
+
+        ctrlbar : { close : true },
+        callback : function(btnRes,cntWin,returnValue){
+            if(btnRes=='ok'){
+                //alert(cntWin);
+                /*var path = cntWin.document.getElementById("path").value;
+                $("#thumb").val(path);
+                return cntWin.checkForm();　*/
+                asyncbox.close(id);
+            }
+            if(btnRes=='cancel'){
+                asyncbox.close(id);
+            }
+
+        }
+    })
+}
+</script>

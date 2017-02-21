@@ -1,0 +1,62 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>{$info.title} - {$Think.config.webname}</title>
+<meta name="description" content="{$Think.config.description}"
+/>
+<meta name="keywords" content="{$Think.config.keywords}" />
+<include file="Common/head" />
+</head>
+<body>
+    <include file="Common/header" />
+    <div class="hm_banner">
+        <div class="met_flash1">
+            <div class="flash">
+                <img src='__STATIC__/picture/1457400465.jpg' width='980' alt='' height='250'>
+            </div>
+        </div>
+    </div>
+    <div class="hm_news">
+        <!-- 代码 开始 -->
+        <div class="box">
+<span style="float:left; margin-right:10px; height:15px; line-height:15px; font-size:14px;"></span>
+        </div>
+        <!-- 代码 结束 -->
+    </div>
+</body>
+<div class="sidebar inner">
+   <include file="News/news_left" />
+    <div class="sb_box">
+        <h3 class="title">
+			<div class="position">当前位置：<a href="/" title="网站首页">网站首页</a> &gt; <a href="/news/" >新闻资讯</a> > <a href="{$info.category_id|url_news_list}">{$info.category_id|get_news_category_name}</a></div>
+
+		</h3>
+        <div class="clear"></div>
+        <div class="active" id="shownews">
+            <h1 class="title">{$info.title}</h1>
+            <div class="editor">
+                <div>{$info.content} <div id="metinfo_additional"></div> </div>
+                <div class="clear"></div>
+            </div>
+            <div class="met_hits">
+                <div class='metjiathis'>
+                    <div class="jiathis_style"><span class="jiathis_txt">分享到：</span>
+                        <a class="jiathis_button_icons_1"></a>
+                        <a class="jiathis_button_icons_2"></a>
+                        <a class="jiathis_button_icons_3"></a>
+                        <a class="jiathis_button_icons_4"></a>
+                        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+                    </div>
+                    <script type="text/javascript" src="js/jia.js" charset="utf-8"></script>
+                </div>点击次数：{$info.clicks}<span><script language='javascript' src='js/hits.js'></script></span>&nbsp;&nbsp;更新时间：{$info.update_time|date="Y-m-d H:i:s",###}&nbsp;&nbsp;【<a href="javascript:window.print()">打印此页</a>】&nbsp;&nbsp;【<a href="javascript:self.close()">关闭</a>】</div>
+            <div class="met_page">上一条：<a href='shownews.php?lang=cn&id=146'>建筑装饰材料铝单板如何选择才好</a>&nbsp;&nbsp;下一条：<a href='shownews.php?lang=cn&id=144'>氟碳铝单板具有什么优点？</a>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<include file="Common/footer" />
+</body>
+</html>

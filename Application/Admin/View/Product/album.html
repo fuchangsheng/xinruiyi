@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title><empty name="info['id']">产品相册<else/>产品相册</empty>-相册管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='<a href="/admin.php/house/index/">产品管理</a> > 添加相册';
+</php>
+<include file="Common:intohead" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/gallery.css" />
+<style type="text/css">
+  #toolTipLayer { z-index: 99999999; }
+.default-0 { display: none; }
+</style>
+</head>
+<body>
+<script type="text/javascript" src="__PUBLIC__/js/ToolTip.js"></script>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">产品相册</div>
+                    </div>
+                    <form id="myform" action="" method="post" enctype="multipart/form-data">
+                        <input name="item_id" id="item_id" type="hidden" value="{$info.id}">
+
+                        <div><span style="font-size:14px;">产品名称：</span><span class="red">{$info.title}</span></div>
+                            <!-- <tr >
+                                <th>&nbsp;</th>
+                                <td>
+                                    <input type="submit" class="btn" value="上传"/>
+                                </td>
+                            </tr> -->
+
+                    </form>
+
+                    <volist name="album_list" id="vo">
+                        <div class="imgFang" id="list-{$vo.id}">
+                            <div class="imgBox">
+                                <a class="preview" href="javascript:setDefault({$vo.id})"><img style="display: inline;" class="preview" src="{$vo.thumb}"  width="220" height="165" ></a>
+                                <img id="default-{$vo.id}"  class="album_default default-{$vo.default}" src="/Public/images/checked.png" style="position: relative; top: -110px; z-index: 999">
+                            </div>
+
+                            <div class="imgInfo">
+                               <input name="dall[]" value="242" type="checkbox"> No.242 <div class="imgTime"> 2016-05-19 管理员</div><br>
+                               产品名称：<a href="" target="_blank" style="color:#555;font-weight:nomal">玮伦原创画册设计物宝天华</a><br>
+                               产品分类：产品画册<br>
+                               阅读权限：0      <div id="tj_242" class="tj_no" title="推荐">&nbsp;</div>
+                               <div id="fb_242" class="fb_yes" title="审核">&nbsp;</div>
+                               <div class="shanchu" title="删除" onclick="del({$vo.id})">&nbsp;</div>
+                               <div class="shuaxin" title="刷新" onclick="">&nbsp;</div>
+                               <div class="bianji" title="修改" onclick="window.location=''">&nbsp;</div>
+                            </div>
+                        </div>
+                    </volist>
+                    <div class="clear"></div>
+                    <div class="mybnt" onclick="AsyncBox_Adapter('uploadimage','__MODULE__/Userfiles/upload_product_img/id/{$info.id}','800','600')" style="margin-top:20px;">点击选择文件</div>
+                    <div class="commonBtnArea">
+                        <div style="float:right;">
+                            {$page}
+                        </div>
+                        <!-- <button class="btn submit ">提交</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+
+    $(".submit").click(function(){
+        /*var title = $("#title").val();
+        var keywords = $("#keywords").val();
+        var description = $("#description").val();
+        if(title==''){
+            popup.error('标题不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        if(keywords==''){
+            popup.error('团购关键词不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        if(description==''){
+            popup.error('团购描述不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }*/
+        commonAjaxSubmit();
+        return false;
+    });
+
+});
+
+function del(id){
+  $.getJSON("__URL__/album_del", { id:id}, function(json){
+      if(json.status==1){
+        $("#list-"+id).fadeOut();
+      }else{
+          popup.alert(json.info);
+      }
+  });
+}
+
+//设置默认图片
+function setDefault(id){
+  var item_id = {$info.id};
+  var delLink="{:U('product/set_album_default')}";
+  $(".album_default").addClass('hide');
+    $.getJSON(delLink, { id:id, item_id:item_id, }, function(json){
+      if(json.status==1){
+        $("#default-"+id).removeClass('default-0');
+        $("#default-"+id).addClass('default-1');
+        $("#default-"+id).removeClass('hide');
+      }
+    })
+}
+
+
+function AsyncBox_Adapter(id,url,width,height){
+　  asyncbox.open({
+        id : id,
+　　    　url : url,
+　　    　width : width,
+　　    　height : height,
+          buttons : [{
+             value    : '确认',                  //按钮文本
+              result  : 'ok'             //按钮 result 值，用于按钮事件触发 唯一
+          },{
+             value    : '取消',                  //按钮文本
+              result  : 'new_btn_2'             //按钮 result 值，用于按钮事件触发 唯一
+          }],
+
+          ctrlbar : { close : true },
+          callback : function(btnRes,cntWin,returnValue){
+            if(btnRes=='ok'){
+                location.reload();
+                return false;
+                //alert(cntWin);
+               var path = cntWin.document.getElementById("path").value;
+               $("#thumb").val(path);
+               return cntWin.checkForm();　
+            }
+            if(btnRes=='cancel'){
+                asyncbox.close(id);
+            }
+
+          }
+　    })
+}
+</script>

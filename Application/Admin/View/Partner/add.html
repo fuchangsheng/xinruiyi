@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>{$actName}伙伴-板块管理-{$site.SITE_INFO.name}</title>
+    <php>
+        $addCss="";
+        $addJs="";
+        $currentNav ='板块管理 > {$actName}伙伴';
+    </php>
+<include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div ><a href="__CONTROLLER__/index">合作伙伴</a></div>
+                        <div class="current">{$actName}伙伴</div>
+                    </div>
+                    <form action="" method="post">
+                        <input name="id" type="hidden" value="{$info['id']}">
+                        <input name="act" type="hidden" value="add">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">伙伴名称：</th>
+                                <td><input name="name" type="text" class="input" size="20" value="{$info.name}" /> </td>
+                            </tr>
+                            <tr>
+                                <th width="120">URL地址：</th>
+                                <td><input name="url" type="text" class="input" size="40" value="{$info.url|default='http://'}" />&nbsp;必须带：http:// </td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <select name="status" style="width: 80px;">
+                                        <option value="1" selected>启用</option>
+                                        <option value="0" <eq name="info['status']" value="0">selected</eq>>禁用</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr  id="upload_tr">
+                                <th>缩略图：</th>
+                                <td><input name="thumb" id="thumb" class="input"  type="text" value="{$info.thumb}" style="width:320px;"><input name="button" type="button" value="上传图片" onclick="AsyncBox_Adapter('uploadimage','/admin.php/Userfiles/uploadimage/category/partner',400,180);" ></td>
+                            </tr>
+
+                            <notempty name="info.thumb">
+                            <tr>
+                                <th></th>
+                                <td><img id="thumb" src="{$info.thumb}" height="120" alt="" /></td>
+                            </tr>
+                            </notempty>
+
+                            <tr>
+                                <th>显示排序：</th>
+                                <td><input class="input text-c" name="sort" type="text" size="6" value="{$info.sort|default=0}"  /> </td>
+                            </tr>
+                            <tr>
+                                <th>备注：</th>
+                                <td><textarea name="remark" style="width: 400px;">{$info.remark}</textarea></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+$(function(){
+    $(".submit").click(function(){
+        var name = $("#name").val();
+
+        if(name==''){
+            popup.error('请输入伙伴名称！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+
+        commonAjaxSubmit();
+    });
+});
+
+
+function AsyncBox_Adapter(id,url,width,height){
+　  asyncbox.open({
+        id : id,
+　　    url : url,
+　　    width : width,
+　　    height : height,
+        buttons : [{
+            value    : '确认',                  //按钮文本
+            result  : 'ok'             //按钮 result 值，用于按钮事件触发 唯一
+        },{
+            value    : '取消',                  //按钮文本
+            result  : 'new_btn_2'             //按钮 result 值，用于按钮事件触发 唯一
+        }],
+
+        ctrlbar : { close : true },
+        callback : function(btnRes,cntWin,returnValue){
+            if(btnRes=='ok'){
+                //alert(cntWin);
+               var path = cntWin.document.getElementById("path").value;
+               $("#thumb").val(path);
+               return cntWin.checkForm();　
+            }
+            if(btnRes=='cancel'){
+                asyncbox.close(id);
+            }
+
+          }
+　  })
+}
+</script>
+</body>
+</html>

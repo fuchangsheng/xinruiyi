@@ -1,0 +1,1 @@
+<?php	return array ( 'smtp_host' => '1', 'smtp_port' => 'a', 'from_email' => '314480946@qq.com', 'from_name' => '252588119@qq.com', 'smtp_user' => 'b', 'smtp_pass' => 'c', 'reply_email' => 'd', 'reply_name' => 'e', 'test_email' => '252588119@qq.com', );?>

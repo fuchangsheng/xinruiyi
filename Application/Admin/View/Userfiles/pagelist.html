@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>图库列表-图库管理-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='图库管理 > 图库列表';
+        </php>
+        <include file="Common:intohead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div <neq name="Think.get.displayModes" value="picList">class="current"</neq> /><a href="__URL__/index/displayModes/index">缩略图显示</a></div>
+                        <div <eq name="Think.get.displayModes" value="picList">class="current"</eq> /><a href="__URL__/index/displayModes/picList">列表显示</a></div>
+                    </div>
+                    <form action="__SELF__" method="GET" id="searchForm">
+                        <b>选择分类：</b>
+                        <select name="typeId" onchange="searchForm.submit()">
+                            <option value="0">所有分类</option>
+                            <volist name="typeList" id="vo">
+                                <option value="{$vo.id}" <if condition="$vo.id eq $_GET['typeId']"> selected="selected" </if> />{$vo.name}</option>
+                            </volist>
+                        </select>  &nbsp;
+                        
+                    </form>
+                   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                           	 	<td>ID</td>
+                                <td>图片名称</td>
+                                <td>缩略图</td>
+                                <td>类型</td>
+                                <td>排序</td>
+                                <td>更新时间</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="picList" id="vo">
+                            <tr align="center" id="list-{$vo.id}">
+                            	<td>{$vo.id}</td>
+                                <td><a href="javascript:show('{$vo.id}');">{$vo.name}</a></td>
+                                <td><img src="{$vo.thumb}" width="75" height="75" alt=""></td>
+                                <td>{$vo.type_id}</td>
+                                <td>{$vo.sort}</td>
+                                <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                                <td>[ <a href="__URL__/addPic/id/{$vo.id}">编辑 </a> ] [ <a href="javascript:del({$vo.id},'{$vo.name}')">删除 </a> ]</td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="commonBtnArea">
+                    	<div style="float:right;">
+                        	{$page}
+                        </div>
+                        
+                    </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+    </body>
+</html>
+<script type="text/javascript">
+
+function del(id,title){
+	　asyncbox.confirm('您确定要删除所选数据 ?',title,function(action){
+	　　　if(action == 'ok'){
+			$.ajax({
+				type:'GET',
+				url:'__URL__/delPic',
+				dataType:'JSON',
+				data:encodeURI('id='+id),
+				success:function(data){
+					if(data.status==1){
+						popup.success(data.info);
+						$('#list-'+id).remove();
+						setTimeout(function(){popup.close("asyncbox_success");},2000);
+					}else{
+						popup.errer(data.info);
+					}
+				}
+			});	
+	　　　}
+　	});
+
+}
+
+</script>
+

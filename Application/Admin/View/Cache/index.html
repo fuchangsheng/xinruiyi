@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加、编辑文章-后台管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='资讯管理 > 添加编辑文章';
+</php>
+<include file="Common:intohead" />
+<link href="/Public/Plugins/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="/Public/Plugins/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<style type="text/css">
+.shouzhi{ cursor: pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">缓存列表</div>
+            </div>
+            <form id="myform">
+                <input type="hidden" name="id" value="{$info.id}" />
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                    <thead>
+                        <tr>
+                            <th width="100">缓存名称</th>
+                            <td width="120">文件名</td>
+                            <td >更新时间</td>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <th >后台菜单</th>
+                        <td>admin_menu.php</td>
+                        <td>{$info['admin_menu']}</td>
+                    </tr>
+
+                    <tr class="last">
+                        <th>管理员列表：</th>
+                        <td>admin_list.php</td>
+                        <td>{$info['admin_list']}</td>
+                    </tr>
+                </table>
+            </form>
+            <div class="commonBtnArea" >
+                <button class="btn submit">全部更新</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<include file="Common:foot" />
+
+
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+
+    $(".submit").click(function(){
+        ajaxSubmit();
+    });
+
+});
+
+function ajaxSubmit(url,formObj){
+    if(!formObj||formObj==''){
+        var formObj="form";
+    }
+    if(!url||url==''){
+        var url=document.URL;
+    }
+
+    $(formObj).ajaxSubmit({
+        url:url,
+        type:"POST",
+        success:function(data, st) {
+            //var data = eval("(" + data + ")");
+            if(data.status==1){
+                popup.success(data.info);
+                setTimeout(function(){
+                    popup.close("asyncbox_success");
+                    top.window.location.reload();
+                },2000);
+            }else{
+                popup.error(data.info);
+                setTimeout(function(){
+                    popup.close("asyncbox_error");
+                },2000);
+            }
+            if(data.url&&data.url!=''){
+                setTimeout(function(){
+                    top.window.location.href=data.url;
+                },2000);
+            }
+            if(data.url==''){
+                setTimeout(function(){
+                    top.window.location.reload();
+                },1000);
+            }
+        }
+    });
+}
+</script>

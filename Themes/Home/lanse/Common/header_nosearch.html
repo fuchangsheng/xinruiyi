@@ -1,0 +1,27 @@
+
+<!--topbar-->
+<div id="topbar">
+     <div class="w">
+        <span>
+        	<a href="/login/register.html?m=admin">快速注册</a>　|
+        	<a href="javascript:;"  onclick="SetHome(this,'{weburl}');">设为首页</a>　|
+       		<a href="javascript:;" onClick="AddFavorite(document.title,window.location)">收藏本站</a>
+        </span>
+        {$Think.config.index_top}
+      </div>
+</div>
+
+<!-- banner S -->
+<div class="banner">
+	<div class="bd">
+		<ul>
+      <volist name="slide_list" id="vo">
+        <li style="background:url({$vo.file}) center 0 no-repeat;"><a target="_blank" href="{$vo.url}" title="{$vo.title}"></a></li>
+      </volist>
+
+		</ul>
+	</div>
+</div>
+
+<script type="text/javascript">jQuery(".banner").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold",  autoPlay:true, autoPage:true, trigger:"click" });</script>
+<!-- banner E -->

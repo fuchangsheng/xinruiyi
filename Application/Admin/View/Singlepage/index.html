@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>单页管理-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='单页管理 > 单页列表';
+        </php>
+        <include file="Common:intohead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">单页列表</div>
+                        <div class="" ><a href="{:U('singlepage/add')}">添加单页</a></div>
+                    </div>
+                    <form action="__URL__" method="GET" id="searchForm">
+                        <b>搜索：</b>
+                        <input placeholder="请输入关键词" id="keyword" class="input" type="text" name="keyword" value="{$Think.get.keyword}" /> &nbsp;
+                        <button class="btn quickSubmit">搜索</button>
+                    </form>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                           	 	<td width="50">ID</td>
+                                <td>单页标题</td>
+                                <td width="100">tag</td>
+                                <td width="50">状态</td>
+                                <td width="50">浏览</td>
+                                <td width="160">更新时间</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                                <td>{$vo.id}</td>
+                                <td >{$vo.title}</td>
+                                <td > {$vo.varname}</td>
+                                <td>{$vo['status']}</td>
+                                <td>{$vo['clicks']}</td>
+                                <td>{$vo.update_time|date="Y-m-d H:i:s",###}</td>
+                                <td>
+                                    [ <a href="__URL__/add?id={$vo.id}">编辑 </a> ]
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="commonBtnArea">
+                    	<div style="float:right;">
+                        	{$page}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+    </body>
+</html>
+
+<script type="text/javascript">
+	$(function(){
+		$(".del").click(function(){
+			var delLink=$(this).attr("link");
+			popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+				if(action == 'ok'){
+					top.window.location.href=delLink;
+				}
+			});
+            return false;
+        });
+	});
+
+	function changeStatus(id){
+		var statusId = $("#status-"+id).attr('name');
+		var status = $("#status-"+id).text();
+		$.get("__URL__/changeNewsStatus/id/"+id+"/statusId/"+statusId, function(data) {
+			if(status=='待审核'){
+				$("#status-"+id).find('span').html('审核通过');
+				$("#status-"+id).attr('name',1);
+				$("#status-"+id).find('span').attr('class','blued');
+			}else{
+				$("#status-"+id).find('span').html('待审核');
+				$("#status-"+id).attr('name',0);
+				$("#status-"+id).find('span').attr('class','red');
+			}
+
+		});
+	}
+
+	function show(id){
+		asyncbox.open({
+		　　　url : '__APP__/News/detail/id/'+id,
+		　　　width : 960,
+		　　　height : 600,
+			tipsbar : {
+		　　　　　title : '文章详细信息',
+		　　　},
+
+		　});
+	}
+</script>

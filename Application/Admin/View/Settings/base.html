@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>基本-基本设置</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='基本 > 基本设置';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">基本设置</div>
+                    </div>
+                    <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">公司名称：</th>
+                                <td><input name="company" type="text" value="{$Think.config.company}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th width="120">服务电话：</th>
+                                <td><input name="phone" type="text" value="{$Think.config.phone}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th width="120">热线电话：</th>
+                                <td><input name="tel" type="text" value="{$Think.config.tel}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th width="120">传真电话：</th>
+                                <td><input name="fax" type="text" value="{$Think.config.fax}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th width="120">电子邮箱：</th>
+                                <td><input name="email" type="text" value="{$Think.config.email}" class="input"/></td>
+                            </tr>
+                            <tr>
+                                <th width="120">QQ客服：</th>
+                                <td><input name="qq" type="text" value="{$Think.config.qq}" class="input"  /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">微信帐号：</th>
+                                <td><input name="wechat" type="text" value="{$Think.config.wechat}" class="input"  /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">微博主页：</th>
+                                <td><input name="microblog" type="text" value="{$Think.config.microblog}" class="input" style="width:340px;" /></td>
+                            </tr>
+                            <tr>
+                                <th>公司简介：</th>
+                                <td><textarea name="intro" rows="5" cols="57">{$Think.config.intro}</textarea></td>
+                            </tr>
+                            <tr>
+                                <th width="120">公司网址：</th>
+                                <td><input name="url" type="text" value="{$Think.config.url}" class="input" style="width:240px;" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">公司地址：</th>
+                                <td><input name="address" type="text" value="{$Think.config.address}" class="input" style="width:340px;" /></td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+        return false;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加、编辑专题-后台管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='专题管理 > 添加编辑专题';
+</php>
+<include file="Common:intohead" />
+
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<style type="text/css">
+.shouzhi{ cursor: pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">{$info['id']?'编辑':'添加'}专题</div>
+
+            </div>
+            <form>
+                <input type="hidden" name="id" value="{$info.id}" />
+                <input type="hidden" name="status" value="{$info.status}" />
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                    <tr>
+                        <th width="100">分类名称：</th>
+                        <td><input id="name" type="text" class="input" size="20" name="name" value="{$info.name}"/> </td>
+                    </tr>
+                    <tr>
+                        <th width="100">排序：</th>
+                        <td><input id="sort" type="text" class="input" size="2" name="sort" value="{$info.sort}"/> </td>
+                    </tr>
+
+                    <tr  id="upload_tr">
+                        <th>缩略图：</th>
+                        <td><input name="thumb" id="thumb" class="input"  type="text" value="{$info.thumb}" style="width:320px;"><input name="button" type="button" value="上传图片" onclick="AsyncBox_Adapter('uploadimage','/admin.php/Userfiles/uploadimage',400,180);" ></td>
+                    </tr>
+
+                    <notempty name="info.thumb">
+                    <tr>
+                        <th></th>
+                        <td><img id="thumb2" src="{$info.thumb}" width="75" height="75" alt="" /></td>
+                    </tr>
+                    </notempty>
+
+
+                </table>
+            </form>
+            <div class="commonBtnArea" >
+                <button class="btn submit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<include file="Common:foot" />
+
+
+</body>
+</html>
+<script type="text/javascript">
+//实例化编辑器
+var ue = UE.getEditor('editor');
+
+$(function(){
+    $(".submit").click(function(){
+        var title = $("#title").val();
+        var thumb = $("#thumb").val();
+        var category_id = $("#category_id").val();
+        if(title==''){
+            popup.error('标题不能为空！');
+            return false;
+        }
+
+        if(category_id==''){
+            popup.error('请选择所属分类');
+            return false;
+        }
+
+
+        commonAjaxSubmit();
+        return false;
+    });
+});
+
+
+
+function AsyncBox_Adapter(id,url,width,height){
+　  asyncbox.open({
+        id : id,
+　　    　url : url,
+　　    　width : width,
+　　    　height : height,
+          buttons : [{
+             value    : '确认',                  //按钮文本
+              result  : 'ok'             //按钮 result 值，用于按钮事件触发 唯一
+          },{
+             value    : '取消',                  //按钮文本
+              result  : 'new_btn_2'             //按钮 result 值，用于按钮事件触发 唯一
+          }],
+
+          ctrlbar : { close : true },
+          callback : function(btnRes,cntWin,returnValue){
+            if(btnRes=='ok'){
+                //alert(cntWin);
+               var path = cntWin.document.getElementById("path").value;
+               $("#thumb").val(path);
+               return cntWin.checkForm();　
+            }
+            if(btnRes=='cancel'){
+                asyncbox.close(id);
+            }
+
+          }
+　    })
+}
+
+
+</script>

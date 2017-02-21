@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>图库分类-图库管理-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='图库管理 > 图库分类';
+        </php>
+        <include file="Common:intohead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div <neq name="Think.get.displayModes" value="picList">class="current"</neq> /><a href="__URL__/index/displayModes/index">缩略图显示</a></div>
+                        <div <eq name="Think.get.displayModes" value="picList">class="current"</eq> /><a href="__URL__/index/displayModes/picList">列表显示</a></div>
+                    </div>
+                    <form action="" method="post" id="quickForm">
+                        <b>添加分类：</b>
+                        <input placeholder="你要添加的分类名称" id="typeName" class="input" type="text" name="name" value="" /> &nbsp;
+                        <button class="btn quickSubmit">确定添加</button>
+                    </form>
+                   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                           	 	<td>ID</td>
+                                <td>名称</td>
+                                <td>排序</td>
+                                <td width="150">操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo">
+                            <tr align="center" id="{$vo.id}">
+                            	<td>{$vo.id}<input type="hidden" name="id" value="{$vo.id}"></td>
+                                <td><input type="text" name="name" value="{$vo.name}" class="input" ></td>
+                                <td><input type="text" name="sort" value="{$vo.sort}" class="input" style="text-align:center; width:50px;"></td>
+                                <td><button class="btn opCat">确定</button></td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="commonBtnArea">
+                    	<div style="float:right;">
+                        	{$page}
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+    </body>
+</html>
+ <script type="text/javascript">
+            $(function(){
+                $(".opCat").click(function(){
+                    var obj=$(this).parents("tr");
+                    var id = obj.find("input[name='id']").val();
+				    var name = obj.find("input[name='name']").val();
+				    var typsort = obj.find("input[name='sort']").val();
+					
+					if($.trim(name)==''){
+						popup.error('类型名称不能为空！');
+						return false;
+					}
+					if(typsort.search(/^[0-9]*[1-9][0-9]*$/) == -1){
+						popup.error('排序必须为正整数！');
+						return false;
+					}
+                    $.ajax({
+						type:'POST',
+						url:'__URL__/addType',
+						dataType:'JSON',
+						data:encodeURI('id='+id+'&name='+name+'&sort='+typsort),
+						success:function(data){
+							 popup.success(data.info);
+							setTimeout(function(){window.location.reload(); },2000);
+						}
+					});	
+                });
+				
+                $(".quickSubmit").click(function(){
+                    if($("#typeName").val()==''){
+                        popup.alert("分类名称不能为空滴！");
+                        return false;
+                    }
+                    commonAjaxSubmit("__URL__/addType","#quickForm");
+                    return false;
+                });
+
+                
+            });
+        </script>

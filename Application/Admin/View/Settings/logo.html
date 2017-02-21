@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>LOGO-LOGO设置</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='LOGO > LOGO设置';
+</php>
+<include file="Common:intohead" />
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/gallery.css" />
+<style type="text/css">
+  #toolTipLayer { z-index: 99999999; }
+</style>
+</head>
+<body>
+<script type="text/javascript" src="__PUBLIC__/js/ToolTip.js"></script>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">LOGO设置</div>
+                    </div>
+                    <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">网站LOGO：</th>
+                                <td >
+                                    <div style="background: #DB2823 none repeat scroll 0% 0%; width: 120px; ">
+                                    <img src="{$Think.config.DEFAULT_THEME__HOME_PATH}/static/images/logo.png" width="120" onMouseOver="toolTip('<img src={$Think.config.DEFAULT_THEME__HOME_PATH}/static/images/logo.png>')" onMouseOut="toolTip()">
+                                    </div>
+                                    <div><span>最佳大小151*43，后缀.png图片</span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="120">路径：</th>
+                                <td >{$Think.config.DEFAULT_THEME__HOME_PATH}/static/images/logo.png
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th width="120">上传图片：</th>
+                                <td><input name="file" type="file"  size="20" value="{$info.file}" /></td>
+                            </tr>
+
+                        </table>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+$(".submit").click(function(){
+    commonAjaxSubmit();
+    return false;
+});
+
+</script>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加编辑节点-权限管理-{$site.SITE_INFO.name}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='权限管理 > 添加编辑节点';
+</php>
+<include file="Common:intoHead" />
+</head>
+<body>
+<div class="wrap"> <include file="Common:head" />
+<div class="mainBody"> <include file="Common:left" />
+    <div id="Right">
+        <div class="contentArea">
+            <div class="Item hr">
+                <div class="current">添加编辑节点</div>
+            </div>
+            <form action="" method="post">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+
+                    <tr>
+                        <th>父级节点：</th>
+                        <td>
+                            <select name="data[pid]" id="p_node">
+                                <option value="0" level="0">请选择父节点</option>
+                                <volist name="list" id="vo">
+                                    <option value="{$vo.id}" level="{$vo.level}" <eq name="info.pid" value="$vo.id">  selected="" </eq> >{$vo.fullname}</option>
+                                </volist>
+                            </select>  &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>节点名称：</th>
+                        <td><input class="input" name="data[title]" type="text" size="40" value="{$info.title}" /> 中文描述</td>
+                    </tr>
+                    <tr>
+                        <th width="120">控制器：</th>
+                        <td><input name="data[c_name]" type="text" class="input" size="40" value="{$info.c_name}" /> 英文，为CONTROLLER的时候首字母大写</td>
+                    </tr>
+                    <tr>
+                        <th width="120">操作名：</th>
+                        <td><input name="data[a_name]" type="text" class="input" size="40" value="{$info.a_name}" /> 英文，为CONTROLLER的时候首字母大写</td>
+                    </tr>
+
+                    <!-- <tr>
+                        <th>类型：</th>
+                        <td><select name="level" style="min-width: 80px;">{$info.levelOption}</select> 项目（GROUP_NAME;  模块(MODEL_NAME); 操作（ACTION_NAME）</td>
+                    </tr> -->
+
+                    <tr>
+                        <th>显示排序：</th>
+                        <td><input class="input" name="data[sort]" type="text" size="3" value="{$info.sort}" /> </td>
+                    </tr>
+                    <tr>
+                        <th>描 述：</th>
+                        <td><textarea name="data[remark]" style="width: 400px;">{$info.remark}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>状态：</th>
+                        <td>
+                        <select name="data[status]" style="width: 80px;">
+                            <if condition="$info.status eq 1">
+                                <option value="1" selected>启用</option><option value="0">禁用</option>
+                            <else/>
+                                <option value="1">启用</option><option value="0" selected>禁用</option>
+                            </if>
+                        </select>
+                        如果禁用那么只有超级管理员才可以访问，其他用户都无权访问</td>
+                    </tr>
+                </table>
+                <input type="hidden" name="id" value="{$info.id}"/>
+            </form>
+            <div class="commonBtnArea" >
+                <button class="btn submit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+$(function(){
+    $("#p_node>option").attr("disabled","disabled");
+    $("#p_node>option[level=0]").removeAttr("disabled");
+    $("#p_node>option[level=1]").removeAttr("disabled");
+    $("#p_node>option[level=2]").removeAttr("disabled");
+
+    $("select[name='level']").change(function(){
+        var level=$(this).val();
+        $("select[name='pid']>option").attr("disabled","disabled");
+        if(level==1){
+            $("select[name='pid']>option[value='0']").removeAttr("disabled").attr("selected","selected");
+        }else if(level==2){
+            $("select[name='pid']>option[level='1']").removeAttr("disabled");
+        }else{
+            $("select[name='pid']>option[level='2']").removeAttr("disabled");
+        }
+    });
+
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+    });
+});
+</script>
+</body>
+</html>

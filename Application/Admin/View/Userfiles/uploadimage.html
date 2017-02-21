@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title><empty name="info['id']">添加图片<else/>编辑图片</empty>-图库管理-{$Think.config.webname}</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='图库管理 > 添加图片';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+
+<div id="">
+    <div class="contentArea">
+        <input id="path" value="{$path}" type="hidden">
+        <neq name="ok" value="1">
+            <form id="addForm" action="" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="category" value="{$category}">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                    <tr>
+                        <th>上传图片</th>
+                        <td><input name="path" type="file" value="" ></td>
+                    </tr>
+                    <tr class="last">
+                        <th width="60"></th>
+                        <td><input name="" type="submit" value="上传图片">&nbsp;&nbsp;<span id="prompt" class="red"></span></td>
+                    </tr>
+                </table>
+            </form>
+        <else />
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                    <tr>
+                        <th>路径：</th>
+                        <td>
+                            <empty name="path">
+                                <a href="javascript:history.go(-1);">返回</a>
+                            <else />
+                                {$path}
+                            </empty>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>缩略图：</th>
+                        <td>
+                            <notempty name="path">
+                                <img src="{$path}" height="50" width="50">
+                            </notempty>
+                        </td>
+                    </tr>
+                    <tr class="last">
+                        <th width="60"></th>
+                        <td>{$result.info}</td>
+                    </tr>
+            </table>
+        </neq>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+    var title = window.parent.document.getElementById("title").value;
+    //dialog.returnValue = title;
+})
+
+function checkForm(){
+    var path = $("#path").val();
+    if(path==''){
+        $("#prompt").text('请选择上传图片！');
+        setTimeout(function(){ $("#prompt").text(''); },1000);
+        return false;
+    }else{
+        return true;
+    }
+
+}
+</script>

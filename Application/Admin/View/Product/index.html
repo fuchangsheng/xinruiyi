@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>产品管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='产品管理 > 产品列表';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">产品列表</div>
+            </div>
+            <form action="__URL__" method="GET" id="searchForm">
+                <b>选择分类：</b>
+                <select name="category_id" onchange="searchForm.submit()">
+                    <option value="0">所有分类</option>
+                    <volist name=":product_category_list()" id="vo">
+                        <option value="{$vo.id}" <if condition="$vo.id eq $_GET['category_id']"> selected="selected" </if> />{$vo.name}</option>
+                    </volist>
+                </select>  &nbsp;
+
+                <input placeholder="请输入关键词" id="keyword" class="input" type="text" name="keyword" value="{$Think.get.keyword}" /> &nbsp;
+                <button class="btn quickSubmit">搜索</button>
+            </form>
+
+            <form action="" method="POST" id="myform">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                <thead>
+                    <tr>
+                   	 	<td width="50">
+                            <label><input name="" class="chooseAll" type="checkbox"> 全选</label>
+                            <!-- <label><input name="" class="unsetAll" type="checkbox"> 反选</label> -->
+                        </td>
+                        <td>产品名称</td>
+                        <td width="140">分类</td>
+                        <td width="140">产品图集</td>
+                        <td width="80">状态</td>
+                        <td width="180">更新时间</td>
+                        <td width="100">发布人</td>
+                        <td width="180">操作</td>
+                    </tr>
+                </thead>
+                <volist name="list" id="vo">
+                    <tr align="center" id="{$vo.id}">
+                    	<td>
+                            <input name="ids[]" value="{$vo.id}" type="checkbox">
+                        </td>
+
+                        <td align="left">
+                            <a href="/product/show-{$vo.id}.html" target="_blank">{$vo.title}</a>
+                            <notempty name="vo.thumb"><span class='red'>[图]</span></notempty>
+                            <eq name="vo.h" value="1"><span class='violet'>[热门]</span></eq>
+                            <eq name="vo.r" value="1"><span class='cyan'>[推荐]</span></eq>
+                            <eq name="vo.t" value="1"><span class='red'>[置顶]</span></eq>
+                        </td>
+                        <td align="center">{$vo.category_id|product_category_list='name'}</td>
+
+                        <td align="center"><a href="__URL__/album?id={$vo.id}">查看图集({$vo.albumNum|default=0}) </a></td>
+                        <td>{$vo['status']}</td>
+                        <td>{$vo.update_time|date="Y-m-d H:i:s",###}</td>
+                        <td>{$vo.user_id|getAdminInfo='username'}</td>
+                        <td>
+                            [ <a href="__URL__/add?id={$vo.id}">编辑 </a> ]
+                            <!-- [ <a link="{:U('News/del/',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.title}" class="del">删除 </a> ] -->
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+            <div class="commonBtnArea">
+                <button class="btn submit">删除所选</button>
+            	<div style="float:right;">
+                	{$page}
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Common:foot" />
+</body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+
+    $(".submit").click(function(){
+        if($(".tab input[type='checkbox']:checked").size()==0){
+            popup.alert("请选择你所要删除的产品");
+            return false;
+        }
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }else{
+            $(this).attr("disabledSubmit",true).html("提交处理中...");
+            commonAjaxSubmit("__CONTROLLER__/del_baoming",'#myform');
+            return false;
+        }
+    });
+
+});
+
+
+function changeStatus(id){
+var statusId = $("#status-"+id).attr('name');
+var status = $("#status-"+id).text();
+$.get("__URL__/changeNewsStatus/id/"+id+"/statusId/"+statusId, function(data) {
+	if(status=='待审核'){
+		$("#status-"+id).find('span').html('审核通过');
+		$("#status-"+id).attr('name',1);
+		$("#status-"+id).find('span').attr('class','blued');
+	}else{
+		$("#status-"+id).find('span').html('待审核');
+		$("#status-"+id).attr('name',0);
+		$("#status-"+id).find('span').attr('class','red');
+	}
+
+});
+}
+
+function show(id){
+asyncbox.open({
+　　　url : '__APP__/News/detail/id/'+id,
+　　　width : 960,
+　　　height : 600,
+	tipsbar : {
+　　　　　title : '文章详细信息',
+　　　},
+
+　});
+}
+</script>

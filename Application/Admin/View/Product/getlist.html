@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title><empty name="info['id']">添加图片<else/>编辑图片</empty>-图库管理-{$Think.config.webname}</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='图库管理 > 添加图片';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+
+<div id="">
+    <div class="contentArea">
+        <input id="path" value="{$path}" type="hidden">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+            <tr>
+                <th>所属分类：</th>
+                <td>
+                    <select name="category_id" id="category_id">
+                        <option value="" selected="">请选择分类</option>
+                        <volist name=":product_category_list()" id="vo">
+                            <option value="{$vo.id}" {$vo['id']==$info['category_id']?'selected=""':''}>{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <select name="texture_id" id="texture_id">
+                        <option value="" selected="">请选择材质</option>
+                        <volist name=":product_texture_list()" id="vo">
+                            <option value="{$vo.id}" {$vo['id']==$info['texture_id']?'selected=""':''}>{$vo.name}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>产品列表：</th>
+                <td>
+                    <ul id="product_list"></ul>
+                </td>
+            </tr>
+            <tr class="last">
+                <th width="60"></th>
+                <td>{$result.info}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+    var title = window.parent.document.getElementById("title").value;
+    //dialog.returnValue = title;
+})
+
+function checkForm(){
+    var path = $("#path").val();
+    if(path==''){
+        $("#prompt").text('请选择上传图片！');
+        setTimeout(function(){ $("#prompt").text(''); },1000);
+        return false;
+    }else{
+        return true;
+    }
+
+}
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+  $('#category_id').live('change', function() {
+    var category_id = $("#category_id option:selected").val();
+    var href='__MODULE__/product/getlist/randNum/'+Math.random();
+
+    jQuery.ajax({
+      type:'GET',
+      url:href,
+      dataType:'text',
+      data:encodeURI('action=list&category_id='+category_id),
+      error: function(){ //如果出错，执行函数
+        alert('Error loading XML document');
+      },
+      success:function(data){
+
+        $("#product_list").html(data);
+      }
+    });
+  });
+
+});
+
+
+</script>

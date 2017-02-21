@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+        <title>添加编辑角色-权限管理-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='权限管理 > 添加编辑角色';
+        </php>
+    <include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">添加编辑角色</div>
+                    </div>
+                    <form action="" method="post">
+                        <input name="id" type="hidden" value="{$info.id}">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">角色组名称：</th>
+                                <td><input name="title" type="text" class="input" size="40" value="{$info.title}" /> </td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <label><input name="status" type="radio" value="1" checked="">启用</label>
+                                    <label><input name="status" type="radio" value="0" <eq name="info['status']" value="0"> checked="" </eq>>禁用</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>显示排序：</th>
+                                <td><input class="input" name="sort" type="text" size="40" value="{$info.sort}" /> </td>
+                            </tr>
+                            <tr>
+                                <th>描 述：</th>
+                                <td><textarea name="describe" style="width: 400px;">{$info.describe}</textarea></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        $(".submit").click(function(){
+            commonAjaxSubmit();
+        });
+    });
+</script>
+</body>
+</html>

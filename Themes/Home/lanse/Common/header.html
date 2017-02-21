@@ -1,0 +1,72 @@
+<div class="hm_top">
+        <div class="hm_top_content">
+            <div class="hm_content_top">
+                <div class="top_left">{$Think.config.welcomes} </div>
+                <div class="top_right"><a href='' onclick='SetHome(this,window.location,"设置成功");' style='cursor:pointer;' title='设为首页'>设为首页</a> | <a href='' onclick='addFavorite("你是否收藏网站");' style='cursor:pointer;' title='收藏本站'>加为收藏</a> | <a href="/contact/">联系我们</a>
+                </div>
+            </div>
+            <div class="hm_content_bottom">
+                <div class="bottom_left">
+                    <img src="__STATIC__/picture/1461044213.png" alt="佛山市南海瑞亿金属建材有限公司" title="佛山市南海瑞亿金属建材有限公司" style="margin:0px 0px 0px 0px;" />
+                </div>
+                <div class="bottom_right">
+                    <P class="phone fr">服务热线：
+                        <SPAN>{$Think.config.phone}</SPAN>
+                        <SPAN>{$Think.config.tel}</SPAN>
+                    </P>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="mynav">
+        <div class="inner">
+            <ul class="list-none">
+                <li id="nav_10001" style='width:108px;' class='navdown'><a href='http://www.hnxryi.com/' title='网站首页' class='nav'><span>网站首页</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_1' style='width:105px;'><a href='ldbmq/' 0 title='铝单板幕墙' class='hover-none nav'><span>铝单板幕墙</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_2' style='width:105px;'><a href='ldbdd/' title='铝单板吊顶' class='hover-none nav'><span>铝单板吊顶</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_4' style='width:105px;'><a href='/product/' title='瑞亿产品' class='hover-none nav'><span>瑞亿产品</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_46' style='width:105px;'><a href='/ldbdza/' title='铝单板定制' class='hover-none nav'><span>铝单板定制</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_5' style='width:105px;'><a href='/case/' title='成功案例' class='hover-none nav'><span>成功案例</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_8' style='width:105px;'><a href='/news/' 0 title='瑞亿资讯' class='hover-none nav'><span>瑞亿资讯</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_7' style='width:105px;'><a href='/about/' title='关于瑞亿' class='hover-none nav'><span>关于瑞亿</span></a>
+                </li>
+                <li class="line"></li>
+                <li id='nav_9' style='width:105px;'><a href='/about/contact/' title='联系瑞亿' class='hover-none nav'><span>联系瑞亿</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="hm_ss">
+            <div class="hm_ss_content">
+                <div class='myS'>
+                    <div style="float:left; height:30px; width:700px; margin-top:2px; line-height:30px;">&nbsp;&nbsp;
+                        <stong>热门搜索关键词：</stong>
+                        <volist name="hotKeywordsArr" id="vo">
+                          <a href="/" style="color:red;">{$vo}</a> |
+                        </volist>
+
+                    </div>
+                    <div style="float:right; margin-top:2px;">
+                        <form method="POST" name="myform1" action="http://www.hnxryi.com/search/search.php?lang=cn" target="_self">
+                            <input type="hidden" name="lang" value='cn' />&nbsp;
+                            <input type="hidden" name="searchtype" value='0' />&nbsp;<span class='navsearch_input'><input type="text" name="searchword" size='20'/></span>&nbsp;
+                            <input class='searchimage' type='image' src='__STATIC__/images/search.png' />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>

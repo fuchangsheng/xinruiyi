@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title><empty name="info['id']">添加<else/>编辑</empty>管理员-权限管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='权限管理 > 添加管理员';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current"><empty name="info['id']">添加<else/>编辑</empty>管理员</div>
+                    </div>
+                    <form action="" method="post">
+                        <input type="hidden" name="id" id="user_id" value="{$info.id}"/>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">用户名：</th>
+                                <td>
+                                {$info.username}
+                                <empty name="info['username']">
+                                    <input class="input" name="username" id="username" type="text" size="20" value="" />
+                                </empty>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>新密码：</th>
+                                <td><input class="input" name="password" type="password" id="password" size="40" value="" /></td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <select name="status" style="width: 80px;">
+                                        <option value="1" selected>启用</option>
+                                        <option value="0" <eq name="info.status" value="0">selected</eq>>禁用</option>
+                                    </select>
+                                    如果禁用了将无法登陆本系统</td>
+                            </tr>
+                            <!-- <tr>
+                                <th>所属用户组</th>
+                                <td>
+                                    <select name="role_id" style="min-width: 80px;">
+                                        <volist name="role_list" id="vo">
+                                            <option value="{$vo.id}" <eq name="vo.id" value="$info['role_id']">selected="selected"</eq> >{$vo.title}</option>
+                                        </volist>
+                                    </select>
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <th>备注：</th>
+                                <td><textarea name="remark" rows="5" cols="57">{$info.remark}</textarea></td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="commonBtnArea">
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+     $(".submit").click(function(){
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var user_id = $("#user_id").val();
+
+        if(username==''){
+            popup.error('用户名不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+
+        if(user_id==''){
+            if(password.length<6){
+                popup.error('请输入6个以上的字符密码！');
+                setTimeout(function(){
+                    popup.close("asyncbox_error");
+                },1500);
+                return false;
+            }
+
+            if(password.length>16){
+                popup.error('密码不得超过16个字符');
+                setTimeout(function(){
+                    popup.close("asyncbox_error");
+                },1500);
+                return false;
+            }
+
+        }
+
+        commonAjaxSubmit();
+    });
+</script>
+</body>
+</html>

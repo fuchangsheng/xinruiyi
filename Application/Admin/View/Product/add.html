@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加、编辑产品-后台管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='产品管理 > 添加编辑产品';
+</php>
+<include file="Common:intohead" />
+
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/ueditor.all.min.js"> </script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="/Public/Plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+
+<style type="text/css">
+.shouzhi{ cursor: pointer;}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">{$info['id']?'编辑':'添加'}产品</div>
+            </div>
+            <form id="addForm">
+                <input type="hidden" name="id" value="{$info.id}" />
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                    <tr>
+                        <th width="100">产品标题：</th>
+                        <td><input id="title" type="text" class="input" size="60" name="title" value="{$info.title}"/></td>
+                    </tr>
+                    <notempty name="info['house_id']">
+                    <tr>
+                        <th width="100">关联楼盘：</th>
+                        <td>{$info['houseName']}</td>
+                    </tr>
+                    </notempty>
+
+                    <tr>
+                        <th width="100">产品属性：</th>
+                        <td>
+                            <label><input type="checkbox" name="status" value="1" {$info['status']|setChecked} /> 审核</label> &nbsp;
+                            <label><input type="checkbox" name="r" value="1" {$info['r']|setChecked} /> 推荐</label>&nbsp;
+                            <label><input type="checkbox" name="h" value="1" {$info['h']|setChecked}/> 热门</label>&nbsp;
+                            <label><input type="checkbox" name="t" value="1" {$info['t']|setChecked} /> 精品</label>&nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>所属分类：</th>
+                        <td>
+                            <select name="category_id" id="category_id">
+                                <option value="" selected="">请选择分类</option>
+                                <volist name=":product_category_list()" id="vo">
+                                    <option value="{$vo.id}" {$vo['id']==$info['category_id']?'selected=""':''}>{$vo.name}</option>
+                                </volist>
+                            </select>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <th>URL地址：</th>
+                        <td><input type="text" class="input" size="60" name="url" id="url" value="{$info.url}"/> 站外地址必须以http://开头 </td>
+                    </tr>
+
+                    <tr>
+                        <th>SEO关键词：</th>
+                        <td><input type="text" class="input" size="60" name="keywords" id="keywords" value="{$info.keywords}"/> 多关键词间用半角逗号（,）分开，建议在100个汉字以内，最好词3至5个</td>
+                    </tr>
+                    <tr>
+                        <th>SEO描述：</th>
+                        <td><textarea class="input" style="height: 60px; width: 600px;" id="description" name="description">{$info.description}</textarea> 用于SEO的描述，建议在200个汉字以内</td>
+                    </tr> -->
+                    <tr  id="upload_tr">
+                        <th>缩略图：</th>
+                        <td><input name="thumb" id="thumb" class="input"  type="text" value="{$info.thumb}" style="width:320px;"><input name="button" type="button" value="上传图片" onclick="AsyncBox_Adapter('uploadimage','__MODULE__/Userfiles/uploadimage/category/product',400,180);" ></td>
+                    </tr>
+
+                    <notempty name="info.thumb">
+                    <tr>
+                        <th></th>
+                        <td><img id="thumb_text" src="{$info.thumb}" width="75" height="75" alt="" /></td>
+                    </tr>
+                    </notempty>
+
+                    <tr class="neirong_list">
+                        <th>产品内容：</th>
+                        <td>
+                        <script id="editor" name="content" type="text/plain" style="width:80%;height:240px;">{$info.content}</script>
+                        </td>
+                    </tr>
+                    <tr class="neirong_list">
+                        <th>产品浏览：</th>
+                        <td><input id="clicks" type="text" class="input text-c" name="clicks" value="{$info.clicks|default="0"}" size="5" /> </td>
+                    </tr>
+                    </form>
+                </table>
+
+            <div class="commonBtnArea" >
+                <button class="btn submit">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<include file="Common:foot" />
+
+
+</body>
+</html>
+<script type="text/javascript">
+$(function(){
+    $(".submit").click(function(){
+        var title = $("#title").val();
+        var keywords = $("#keywords").val();
+        var description = $("#description").val();
+        var category_id = $("#category_id").val();
+        if(title==''){
+            popup.error('标题不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        if(keywords==''){
+            popup.error('产品关键词不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        if(description==''){
+            popup.error('产品描述不能为空！');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        if(category_id==''){
+            popup.error('请选择所属分类');
+            setTimeout(function(){
+                popup.close("asyncbox_error");
+            },1500);
+            return false;
+        }
+        adminSubmit('','#addForm');
+        return false;
+    });
+});
+
+//实例化编辑器
+var ue = UE.getEditor('editor');
+
+function AsyncBox_Adapter(id,url,width,height){
+　  asyncbox.open({
+        id : id,
+　　    　url : url,
+　　    　width : width,
+　　    　height : height,
+          buttons : [{
+             value    : '确认',                  //按钮文本
+              result  : 'ok'             //按钮 result 值，用于按钮事件触发 唯一
+          },{
+             value    : '取消',                  //按钮文本
+              result  : 'new_btn_2'             //按钮 result 值，用于按钮事件触发 唯一
+          }],
+
+          ctrlbar : { close : true },
+          callback : function(btnRes,cntWin,returnValue){
+            if(btnRes=='ok'){
+                //alert(cntWin);
+               var path = cntWin.document.getElementById("path").value;
+               $("#thumb").val(path);
+               if ($("#thumb_text")){
+                    $("#thumb_text").attr('src',path);
+                }
+
+               return cntWin.checkForm();　
+            }
+            if(btnRes=='cancel'){
+                asyncbox.close(id);
+            }
+
+          }
+　    })
+}
+</script>
+
+

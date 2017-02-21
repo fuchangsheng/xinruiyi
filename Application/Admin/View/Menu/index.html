@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台菜单管理-{$Think.config.webname}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='板块管理 > 后台菜单管理';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="Item hr">
+                <div class="current">菜单管理</div>
+            </div>
+            <form action="" method="post" id="quickForm">
+                <b>添加菜单：</b>
+                <input type="hidden" name="act" value="add" /> &nbsp;
+                <select name="data[pid]">
+                    <option value="0">顶级菜单</option>
+                    <volist name="list" id="vo">
+                        <option value="{$vo.id}">{$vo.fullname}</option>
+                    </volist>
+                </select>  &nbsp;
+                <input placeholder="菜单名称" id="newName" class="input" type="text" name="data[name]" value="" /> &nbsp;
+                <input placeholder="控制器" id="newName" class="input" type="text" name="data[controller]" value="" style="width:80px;" /> &nbsp;
+                <input placeholder="方法" id="newName" class="input" type="text" name="data[action]" value="" style="width:80px;" /> &nbsp;
+                <input placeholder="参数" id="newName" class="input" type="text" name="data[url]" value="" style="width:120px;" /> &nbsp;
+                <input placeholder="排序" id="newName" class="input" type="text" name="data[sort]" value="" style="width:30px;" /> &nbsp;
+                <button class="btn quickSubmit">确定添加</button>
+                <button class="btn updateCache">更新缓存</button>
+            </form>
+            <div class="Item hr red">
+                <span>注：</span>禁止非开发人员自行修改添加修改菜单
+            </div>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab">
+                <thead>
+                    <tr align="center">
+                        <td width="10%">原菜单id</td>
+                        <td width="20%">原菜单结构 <b title="单击菜单隐藏/显示该菜单下在子类"><a href="javascript:vodi(0)" id="shrink">[伸展]</a></b></td>
+                        <td width="10%">上级菜单</td>
+                        <td width="10%">修改后的名称</td>
+                        <td width="10%" align="left">控制器</td>
+                        <td width="10%" align="left">方法</td>
+                        <td width="10%" align="left">参数</td>
+                        <td width="80" align="left">排序</td>
+                        <td width="10%">状态</td>
+                        <td width="10%">操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <volist name="list" id="val">
+                        <tr class="list" pid="{$val.pid}" id="{$val.id}">
+                            <td align="center">{$val.id}<input type="hidden" name="id" value="{$val.id}"/></td>
+                            <td  class="val tree" style="cursor: pointer;">{$val.fullname}</td>
+                            <td >
+                                <select name="pid">
+                                    <option value="0">顶级菜单</option>
+                                    <volist name="list" id="vo1">
+                                        <if condition="$vo1['id'] eq $val['pid']">
+                                            <option value="{$vo1.id}" selected="selected" readonly>{$vo1.fullname}</option>
+                                            <else/>
+                                            <option value="{$vo1.id}">{$vo1.fullname}</option>
+                                        </if>
+                                    </volist>
+                                </select>
+                            </td>
+                            <td ><input type="text" value="{$val.name}" name="name" class="input" placeholder="菜单名称" style="width:80px;"/></td>
+
+                            <td >
+                                <input type="text" value="{$val.controller}" name="controller" class="input" placeholder="控制器" style="width:80px;"/>
+                            </td>
+                            <td >
+                                <input type="text" value="{$val.action}" name="action" class="input" placeholder="方法" style="width:80px;"/>
+                            </td>
+                            <td >
+                                <input type="text" value="{$val.url}" name="url" class="input" placeholder="参数" style="width:120px;"/>
+                            </td>
+                            <td >
+                                <input type="text" value="{$val.sort}" name="sort" class="input" placeholder="排序" style="width:40px; text-align:center; "/>
+                            </td>
+                            <td align="center" width="10%"> <span class="cursor status" name="{$val.id}">{$val['status']==1?'显示':'隐藏'}</span></td>
+                            <td align="center" width="10%"><button class="btn opCat">确定</button></td>
+                        </tr>
+                    </volist>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<form action="" method="POST" id="opForm">
+    <input id="id" type="hidden" name="data[id]" />
+    <input id="act" type="hidden" name="act" value="act" />
+    <input id="pid" type="hidden" name="data[pid]" />
+    <input id="name" type="hidden" name="data[name]" />
+    <input id="url" type="hidden" name="data[url]" />
+    <input id="sort" type="hidden" name="data[sort]" />
+    <input id="controller" type="hidden" name="data[controller]" />
+    <input id="action" type="hidden" name="data[action]" />
+
+</form>
+<div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        $(".opCat").click(function(){
+            var obj=$(this).parents("tr");
+            $("#id").val(obj.find("input[name='id']").val());
+            $("#act").val('edit');
+            $("#pid").val(obj.find("select[name='pid']").val());
+            $("#name").val(obj.find("input[name='name']").val());
+            $("#url").val(obj.find("input[name='url']").val());
+            $("#sort").val(obj.find("input[name='sort']").val());
+            $("#controller").val(obj.find("input[name='controller']").val());
+            $("#action").val(obj.find("input[name='action']").val());
+
+            if($("#act").val()=="del"){
+                popup.confirm('你真的打算删除该菜单吗?','温馨提示',function(action){
+                    if(action == 'ok'){
+                        commonAjaxSubmit("","#opForm");
+                    }
+                });
+                return false;
+            }
+            commonAjaxSubmit("","#opForm");
+        });
+
+        $(".quickSubmit").click(function(){
+            if($("#newName").val()==''){
+                popup.alert("菜单名称不能为空滴！");
+                return false;
+            }
+            commonAjaxSubmit("","#quickForm");
+            return false;
+        });
+
+        $(".updateCache").click(function(){
+            $.get("__MODULE__/cache/cacheAdminMenu", { name: "John", time: "2pm" },
+              function(data){
+                popup.alert("更新成功！");
+              });
+            return false;
+        })
+
+        $(".tree").click(function(){
+            var id = $(this).parent().attr('id');
+
+            $(".list").each(function(index, el) {
+                var pid = $(this).attr('pid');
+                if(pid==id){
+                    $(this).toggle();
+                }
+            });
+        });
+
+
+        $("#shrink").click(function(){
+            $(".list").each(function(index, el) {
+                var pid = $(this).attr('pid');
+                if(pid>0){
+                    $(this).toggle();
+                }
+            });
+        });
+
+        $(".status").each(function(index, el) {
+            var text = $(this).text();
+            if(text=='显示'){
+                $(this).addClass('blue');
+            }else{
+                $(this).addClass('red');
+            }
+        });
+
+        $(".status").click(function(event) {
+            var text = $(this).text();
+            var id = $(this).attr('name');
+            var status;
+            if(text=='显示'){
+                status = 0;
+                var text = '隐藏';
+                var style = 'red';
+            }else{
+                status = 1;
+                var text = '显示';
+                var style = 'blue';
+            }
+            $(this).text(text);
+            $(this).attr('name',status);
+            $(this).toggleClass('red');
+            $(this).toggleClass('blue');
+            $(this).addClass(style);
+
+            $.get("__URL__/changeStatus", { id: id, status: status});
+        });
+    });
+
+</script>
+</body>
+</html>

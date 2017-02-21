@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>修改账号信息-系统设置-{$Think.config.webname}</title>
+<include file="Common:intohead" />
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='网站管理 > 修改信息';
+</php>
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">修改账号信息</div>
+                    </div>
+                    <form action="" method="post">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">当前账号：</th>
+                                <td><span class="red">{$userInfo.username}</span></td>
+                            </tr>
+                            <tr>
+                                <th>手机：</th>
+                                <td><input  disabled="disabled" class="input" name="phone" type="text" size="40" value="{$userInfo.phone}" /></td>
+                            </tr>
+                            <tr>
+                                <th>昵称：</th>
+                                <td><input class="input" name="nickname" type="text" size="40" value="{$userInfo.nickname}" /></td>
+                            </tr>
+                            <tr>
+                                <th>邮箱：</th>
+                                <td><input class="input" name="email" type="text" size="40" value="{$userInfo.email}" /></td>
+                            </tr>
+                            <tr>
+                                <th>单位：</th>
+                                <td><input class="input" name="company" type="text" size="40" value="{$userInfo.company}" /></td>
+                            </tr>
+                            <tr>
+                                <th>地址：</th>
+                                <td><input class="input" name="address" type="text" size="40" value="{$userInfo.address}" /></td>
+                            </tr>
+                            <tr>
+                                <th>备注：</th>
+                                <td><textarea name="remark" cols="40">{$userInfo.remark}</textarea></td>
+                            </tr>
+                            <tr>
+                                <th>登录次数：</th>
+                                <td>{$userInfo.login_count}</td>
+                            </tr>
+                            <tr>
+                                <th>最后登录IP：</th>
+                                <td>{$userInfo.last_login_ip}</td>
+                            </tr>
+                            <tr>
+                                <th>最后登录时间：</th>
+                                <td>{$userInfo.last_login_time|time_format}</td>
+                            </tr>
+                            <tr>
+                                <th>创建时间：</th>
+                                <td>{$userInfo.create_time|time_format}</td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+</body>
+</html>
+<script type="text/javascript">
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+    });
+</script>

@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<title>新闻资讯 - {$Think.config.webname}</title>
+<meta name="description" content="新闻资讯,{$Think.config.webname}" />
+<meta name="keywords" content="{$Think.config.webname}" />
+<meta name="generator" content="MetInfo 5.2.6" />
+<link href="favicon.ico" rel="shortcut icon" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/metinfo_ui.css" id="metuimodule" data-module="2" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/metinfo.css" />
+<script src="__STATIC__/js/jquery1.7.2.js" type="text/javascript"></script>
+<script src="__STATIC__/js/metinfo_ui.js" type="text/javascript"></script>
+<script src="__STATIC__/js/ch.js" type="text/javascript"></script>
+<!--[if IE]>
+<script src="__STATIC__/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+</head>
+<script type="text/javascript">
+    $(function() {
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 165) {
+                if (!$("nav").hasClass("navfix")) {
+                    $("nav").addClass("navfix");
+                }
+            }
+            if ($(window).scrollTop() < 165) {
+                $("nav").removeClass("navfix");
+            }
+        })
+    });
+</script>
+
+<body>
+    <include file="Common/header" />
+    <div class="hm_banner">
+        <div class="met_flash1">
+            <div class="flash">
+                <img src='__STATIC__/picture/1457400465.jpg' width='980' alt='' height='250'>
+            </div>
+        </div>
+    </div>
+    <div class="hm_news">
+        <!-- 代码 开始 -->
+        <div class="box">
+<span style="float:left; margin-right:10px; height:15px; line-height:15px; font-size:14px;"></span>
+        </div>
+        <!-- 代码 结束 -->
+    </div>
+</body>
+<div class="sidebar inner">
+    <include file="News/news_left" />
+    <div class="sb_box">
+        <h3 class="title">
+			<div class="position">当前位置：<a href="http://www.hnxryi.com/" title="网站首页">网站首页</a> &gt; <a href=../news/ >瑞亿资讯</a></div>
+
+		</h3>
+        <div class="clear"></div>
+        <div class="active" id="newslist" style="background-color:#FFFFFF; margin-top:1px; margin-left:auto; margin-right:auto; margin-bottom:15px;">
+            <div style="height:180px; overflow:hidden; margin-bottom:20px;">
+                <ul class='list-none metlist'>
+                    <volist name="list" id="vo" offset="0" length="1">
+                        <li style='height:160px; margin-bottom:40px;' class='list top'><span></span>
+                            <div>
+                                <div style='float:left; margin-left:0px; '>
+                                    <img style='border:1px solid #d6d6d6; text-align:center;padding:2px;' src='{$vo.thumb}' alt='{$vo.title}' title='{$vo.title}' width='200' height='150' />
+                                </div>
+                                <div style=' float:right; width:450px;margin-top:2px;'>
+                                    <h2 style='height:30px;font-size:14px;border-bottom:dotted #999 1px; margin-bottom:5px;'><a href='{$vo.id|url_news_show}' title='{$vo.title}' target='_self'>{$vo.title}</a></h2>
+                                    <div style='color:#b6b6b6; font-size:13px;margin-top:5px;height:50px; line-height:24px; padding-left:2px;  overflow:hidden;'>{$vo.description}</div>
+                                    </br>
+                                    <div style='height;30px; width:80px; margin-top:15px ;border:solid #999 1px;float:right; text-align:center'><a style='font-size:12px;' href='{$vo.id|url_news_show}' title='{$vo.title}' target='_self'>查看更多</a>
+                                    </div>
+                                </div>
+                                <div style='clear:both'></div>
+                            </div>
+                        </li>
+                    </volist>
+
+                </ul>
+            </div>
+            <ul class='list-none metlist'>
+                <volist name="list" id="vo" offset="1" length="10">
+                    <li class='list top'><span>[{$vo.update_time|mydate}]</span><a href='{$vo.id|url_news_show}' title='{$vo.title}' target='_self'>{$vo.title}</a>
+                    </li>
+                </volist>
+
+            </ul>
+        </div>
+        <div class="clear" style="height:15px;"></div>
+        <div id="flip" style="text-align:center;">
+            <div class='digg4 metpager_8'>{$page}
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+    <include file="Common/footer" />
+<script src="__STATIC__/js/fun.inc.js" type="text/javascript"></script>
+<script src="__STATIC__/js/stat.js" type="text/javascript"></script>
+<script src='__STATIC__/js/online.js' type='text/javascript' id='metonlie_js'></script>
+</body>
+
+</html>

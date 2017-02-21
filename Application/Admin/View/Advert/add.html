@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>添加编辑广告-广告管理-{$site.SITE_INFO.name}</title>
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='广告管理 > 添加编辑角色';
+</php>
+<include file="Common:intohead" />
+</head>
+<body>
+<div class="wrap">
+    <include file="Common:head" />
+    <div class="mainBody">
+        <include file="Common:left" />
+        <div id="Right">
+            <div class="contentArea">
+                <div class="Item hr">
+                    <div ><a href="__CONTROLLER__/index">广告列表</a></div>
+                    <div class="current">添加广告</div>
+                </div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <input name="id" type="hidden" value="{$info['id']}">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                        <tr>
+                            <th>广告位：</th>
+                            <td>
+                                <select name="place" id="place" style="width: 180px;">
+                                    <option value="0" selected>请选择广告位</option>
+                                    <volist name="place_list" id="vo">
+                                        <option value="{$vo.id}" <eq name="info['place']" value="$vo.id">selected</eq>>{$vo.name}({$vo.w}*{$vo.h})</option>
+                                    </volist>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="120">广告名称：</th>
+                            <td><input name="name" type="text" class="input" size="20" value="{$info.name}" /> </td>
+                        </tr>
+                        <tr>
+                            <th width="120">文件：</th>
+                            <td><input name="file" type="file"  size="20" value="{$info.file}" /> </td>
+                        </tr>
+                        <tr>
+                            <th width="120">类型：</th>
+                            <td>
+                                <label style="margin-right:10px;"><input name="file_type" type="radio" value="1" checked="">图片</label>
+                                <label style="margin-right:10px;"><input name="file_type" type="radio" value="2" <eq name="info.file_type" value="2">checked=""</eq> >FLASH</label>
+                            </td>
+                        </tr>
+
+                        <notempty name="info.file">
+                        <tr>
+                            <th></th>
+                            <td><img id="file" src="{$info.file}" width="75" height="75" alt="" /></td>
+                        </tr>
+                        </notempty>
+
+                        <tr>
+                            <th width="120">URL地址：</th>
+                            <td><input name="url" type="text" class="input" size="40" value="{$info.url}" />&nbsp;必须带：http:// </td>
+                        </tr>
+                        <tr>
+                            <th>状态：</th>
+                            <td>
+                                <select name="status" style="width: 80px;">
+                                    <option value="1" selected>启用</option>
+                                    <option value="0" <eq name="info['status']" value="0">selected</eq>>禁用</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>显示排序：</th>
+                            <td><input class="input text-c" name="sort" type="text" size="6" value="{$info.sort|default=0}"  /> </td>
+                        </tr>
+                        <tr>
+                            <th>备注：</th>
+                            <td><textarea name="remark" style="width: 400px;">{$info.remark}</textarea></td>
+                        </tr>
+                    </table>
+
+                </form>
+                <div class="commonBtnArea" >
+                    <button class="btn submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+$(function(){
+    $(".submit").click(function(){
+        var place = $("#place").val();
+        if(place==0){
+            popup.alert("请选择广告位!");
+            return false;
+        }
+        commonAjaxSubmit();
+    });
+});
+</script>
+</body>
+</html>

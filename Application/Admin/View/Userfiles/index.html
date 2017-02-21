@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文件管理-{$Think.config.webname}</title>
+<php>
+    $addCss="";
+    $addJs="";
+    $currentNav ='文件管理 > 文件列表';
+</php>
+<include file="Common:intohead" />
+
+</head>
+<body>
+
+    <div class="wrap">
+        <include file="Common:head" />
+        <div class="mainBody">
+            <include file="Common:left" />
+            <div id="Right">
+                <div class="Item hr">
+                    <div class="current">文件列表</div>
+                </div>
+                <form action="__URL__" method="GET" id="searchForm">
+                    <b>选择分类：</b>
+                    <select name="category_id" onchange="searchForm.submit()">
+                        <option value="0">所有分类</option>
+                        <volist name=":product_category_list()" id="vo">
+                            <option value="{$vo.id}" <if condition="$vo.id eq $_GET['category_id']"> selected="selected" </if> />{$vo.name}</option>
+                        </volist>
+                    </select>  &nbsp;
+
+                    <input placeholder="请输入关键词" id="keyword" class="input" type="text" name="keyword" value="{$Think.get.keyword}" /> &nbsp;
+                    <button class="btn quickSubmit">搜索</button>
+                </form>
+
+                <form action="" method="POST" id="myform">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                    <thead>
+                        <tr>
+                            <td width="50">
+                                <label><input name="" class="chooseAll" type="checkbox"> 全选</label>
+                            </td>
+                            <td width="60">序号</td>
+                            <td width="120">分类</td>
+                            <td width="60">缩略图</td>
+                            <td width="60">类型</td>
+                            <td width="120">扩展名</td>
+                            <td width="120">大小</td>
+                            <td width="160">创建时间</td>
+                            <td width="">文件路径</td>
+                            <td width="180">操作</td>
+                        </tr>
+                    </thead>
+                    <volist name="list" id="vo">
+                        <tr align="center" id="{$vo.id}">
+                            <td>
+                                <input name="ids[]" value="{$vo.id}" type="checkbox">
+                            </td>
+                            <td align="center">{$i}</td>
+                            <td align="center">{$vo.category|fileArr}</td>
+                            <td align="center"> <a href="{$vo.path}" target="_blank"><img src="{$vo.path}" height="30" width="30" class="thumb_list"></a> </td>
+                            <td align="center">{$vo.type}</td>
+                            <td align="center">{$vo.ext}</td>
+                            <td>{$vo['size']|get_byte}</td>
+                            <td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+                            <td><span id="d_clip_text{$vo.id}">{$vo['path']}</span>&nbsp;&nbsp;</td>
+                            <td>
+                                [ <a href="__URL__/add?id={$vo.id}">编辑 </a> ]
+                            </td>
+                            <input type="hidden" value="{$vo.path}" id="copy_txt{$vo.id}">
+                        </tr>
+                    </volist>
+                </table>
+                <div class="commonBtnArea">
+                    <button class="btn submit">删除所选</button>
+                    <a class="btn synchronous_data">同步数据</a>
+                    <div style="float:right;">
+                        {$page}
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <include file="Common:foot" />
+</body>
+</html>
+
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+
+	$(".submit").click(function(){
+        if($(".tab input[type='checkbox']:checked").size()==0){
+            popup.alert("请选择你所要删除的文件");
+            return false;
+        }
+        if($(this).attr("disabledSubmit")){
+            popup.alert("已提交，系统在处理中...");
+            return false;
+        }else{
+            $(this).attr("disabledSubmit",true).html("提交处理中...");
+            commonAjaxSubmit("__CONTROLLER__/del_file",'#myform');
+            return false;
+        }
+    });
+
+    $(".synchronous_data").click(function(){
+        $(this).html('正在同步...');
+        $.get("__CONTROLLER__/synchronous_data/", function(data) {
+            popup.alert(data.info);
+            if(data.status==1){
+                location.reload();
+            }
+            $(".synchronous_data").html('同步数据');
+
+        });
+    });
+
+
+    /*$(".thumb_list").hover(function(){
+      $(this).attr('height',120);
+      $(this).attr('width',120);
+    },function(){
+      $(this).attr('height',30);
+      $(this).attr('width',30);
+    });*/
+
+});
+
+
+function changeStatus(id){
+	var statusId = $("#status-"+id).attr('name');
+	var status = $("#status-"+id).text();
+	$.get("__URL__/changeNewsStatus/id/"+id+"/statusId/"+statusId, function(data) {
+		if(status=='待审核'){
+			$("#status-"+id).find('span').html('审核通过');
+			$("#status-"+id).attr('name',1);
+			$("#status-"+id).find('span').attr('class','blued');
+		}else{
+			$("#status-"+id).find('span').html('待审核');
+			$("#status-"+id).attr('name',0);
+			$("#status-"+id).find('span').attr('class','red');
+		}
+
+	});
+}
+
+function show(id){
+	asyncbox.open({
+	　　　url : '__APP__/News/detail/id/'+id,
+	　　　width : 960,
+	　　　height : 600,
+		tipsbar : {
+	　　　　　title : '文章详细信息',
+	　　　},
+
+	　});
+}
+
+</script>

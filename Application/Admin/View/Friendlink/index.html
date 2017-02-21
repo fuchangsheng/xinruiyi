@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>友情链接-板块管理-{$site.SITE_INFO.name}</title>
+<include file="Common:intohead" />
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='板块管理 > 友情链接';
+</php>
+<style type="text/css">
+.text-left{ padding-left: 10px; text-align: left;}
+</style>
+</head>
+<body>
+        <div class="wrap"> <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">友情链接</div>
+                        <div><a href="__CONTROLLER__/add">添加链接</a></div>
+                    </div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td width="100"><label><input name="" class="chooseAll" type="checkbox"/> 全选</label> <label><input name="" class="unsetAll" type="checkbox"/> 反选</label></td>
+                                <td>ID</td>
+                                <td>站点名称</td>
+                                <td>URL</td>
+                                <td>备注</td>
+                                <td>状态</td>
+                                <td>操作</td>
+                            </tr>
+                        </thead>
+                        <volist name="list" id="vo" key="k">
+                            <tr align="center" id="{$vo.id}">
+                                <td><input type="text" name="table[]" value="{$vo.sort}" class="input text-c" size="3" /></td>
+                                <td>{$vo.id}</td>
+                                <td class="text-left">{$vo.name}</td>
+                                <td class="text-left">{$vo.url}</td>
+                                <td width="240" class="text-left">{$vo.remark|cut=26}</td>
+                                <td><a class="status-class" href="javascript:void(0);" val="{$vo.status}">{$vo.status_text}</a></td>
+                                <td>
+                                    <a href="__CONTROLLER__/add/?id={$vo.id}" class="edit">编辑</a>
+                                    <a link="#" id="{$vo.id}" href="javascript:void(0)" name="{$vo.name}" class="del">删除</a>
+                                </td>
+                            </tr>
+                        </volist>
+                    </table>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">更新排序</button>
+                        <div style="float:right;">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+
+    </body>
+</html>
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+    })
+
+    $(".del").click(function(){
+            var delLink="{:U('friendlink/del')}";
+            var id = $(this).attr('id');
+            popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+                if(action == 'ok'){
+                    //top.window.location.href=delLink;
+                    $.getJSON(delLink, { id:id }, function(json){
+                    if(json.status==1){
+                        popup.success(json.info);
+                        $('#'+id).fadeOut("slow");
+                    }else{
+                        popup.alert(json.info);
+                    }
+                });
+                }
+            });
+            return false;
+        });
+
+    //快捷启用禁用操作
+    $(".status-class").click(function(){
+        var obj=$(this);
+        var id=$(this).parents("tr").attr("id");
+        var status=$(this).attr("val");
+        $.getJSON("__CONTROLLER__/opRoleStatus", { id:id, status:status }, function(json){
+            if(json.status==1){
+                if(status==1){
+                    $(obj).text('禁用');
+                    $(obj).removeClass('blue').addClass('red');
+                    $(obj).attr("val",0);
+                }else{
+                    $(obj).text('启用');
+                    $(obj).removeClass('red').addClass('blue');
+                    $(obj).attr("val",1);
+                }
+            }
+        });
+    });
+
+
+    $(".status-class").each(function(index, el) {
+        var text = $(this).text();
+        if(text=='禁用'){
+            $(this).addClass('red');
+        }else{
+            $(this).addClass('blue');
+        }
+
+    });
+});
+
+
+</script>

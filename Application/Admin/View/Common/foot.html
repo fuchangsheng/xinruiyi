@@ -1,0 +1,19 @@
+    <div id="Bottom" >© 2013 本后台由 <a href="http://www.liqingbo.cn" target="_blank">李清波</a> 所写，博客：<a href="http://www.liqingbo.cn" target="_blank" >http://www.liqingbo.cn</a>  <a href="http://www.lqbcms.com" target="_blank"></a> All rights reserved 联系我们 </div>
+<script type="text/javascript">
+    $(window).resize(autoSize);
+    $(function(){
+        autoSize();
+        $(".loginOut").click(function(){
+            var url=$(this).attr("href");
+            popup.confirm('你确定要退出吗？','你确定要退出吗',function(action){
+                if(action == 'ok'){ window.location=url; }
+            });
+            return false;
+        });
+
+        var time=self.setInterval(function(){$("#today").html(date("Y-m-d H:i:s"));},1000);
+
+
+    });
+
+</script>

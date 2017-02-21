@@ -1,0 +1,1 @@
+<?php	return array ( 'company' => '', 'phone' => '18942452888', 'tel' => '13392792666', 'fax' => '', 'email' => '', 'qq' => '', 'wechat' => '', 'microblog' => '', 'intro' => '', 'url' => '', 'address' => '', );?>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>广告位-广告位管理-{$site.SITE_INFO.name}</title>
+<include file="Common:intohead" />
+<php>
+$addCss="";
+$addJs="";
+$currentNav ='广告位管理 > 广告位';
+</php>
+<style type="text/css">
+.text-left{ padding-left: 10px; text-align: left;}
+</style>
+</head>
+<body>
+        <div class="wrap"> <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">广告位列表</div>
+                        <div><a href="__CONTROLLER__/addplace">添加广告位</a></div>
+                    </div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab">
+                        <thead>
+                            <tr>
+                                <td width="100">排序</td>
+                                <td width="20">ID</td>
+                                <td>广告位名称</td>
+                                <td>宽</td>
+                                <td>高</td>
+                                <td>操作</td>
+                            </tr>
+                        </thead>
+                        <form action="" method="post">
+                        <volist name="list" id="vo" key="k">
+                            <tr align="center" id="{$vo.id}">
+                                <td><input type="text" name="table[{$vo.id}]" value="{$vo.sort}" class="input text-c" size="3" /></td>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.placename}</td>
+                                <td>{$vo.w}</td>
+                                <td>{$vo.h}</td>
+
+                                <td><a href="__CONTROLLER__/addplace/?id={$vo.id}" class="edit">编辑</a> </td>
+                            </tr>
+                        </volist>
+                        </form>
+                    </table>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">更新排序</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+        <script type="text/javascript">
+            $(function(){
+                //快捷启用禁用操作
+                $(".opStatus").click(function(){
+                    var obj=$(this);
+                    var id=$(this).parents("tr").attr("id");
+                    var status=$(this).attr("val");
+                    $.getJSON("__URL__/opRoleStatus", { id:id, status:status }, function(json){
+                        if(json.status==1){
+                            popup.success(json.info);
+                            $(obj).attr("val",json.data.status).html(status==1?"启用":"禁用").parents("td").prev().html(status==1?"禁用":"启用");
+                        }else{
+                            popup.alert(json.info);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
+<script type="text/javascript">
+$(function(){
+    clickCheckbox();
+    $(".submit").click(function(){
+        commonAjaxSubmit();
+    })
+});
+</script>

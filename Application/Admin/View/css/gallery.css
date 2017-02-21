@@ -1,0 +1,97 @@
+.imgFang {
+    border-bottom: 1px #ddd solid;
+    border-right: 1px #ddd solid;
+    margin: 0;
+    padding: 20px;
+    float: left;
+    height: 274px;
+}
+
+.imgBox {
+    *display: table-cell;
+    width: 220px;
+    height: 165px;
+    margin: 0;
+    *font-size: 220px;
+    line-height: 220px;
+    text-align: center;
+    vertical-align: bottom;
+    padding: 0px;
+}
+
+.imgBox {
+    line-height: 220px;
+    text-align: center;
+}
+
+img.preview {
+    border: 0 none;
+    max-width: 220px;
+    max-height: 165px;
+    overflow: hidden;
+    vertical-align: bottom;
+    display: none;
+    z-index: -99;
+}
+
+.imgInfo {
+    margin: 20px 0 0 2px;
+    padding: 0;
+    font: 12px/23px Simsun,Arial, Helvetica, sans-serif;
+}
+
+.imgTime {
+    float: right;
+    font: 12px/23px Simsun,Arial, Helvetica, sans-serif;
+    margin: 0 3px 0 0;
+}
+
+.tj_no {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url(img/tj.png) -15px no-repeat;
+    font: 12px/15px Simsun,Arial, Helvetica, sans-serif;
+    margin: 2px 4px;
+    cursor: pointer;
+}
+
+.fb_yes {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url(img/fabu.png) -15px no-repeat;
+    font: 12px/15px Simsun,Arial, Helvetica, sans-serif;
+    margin: 2px 4px;
+    cursor: pointer;
+}
+
+.shanchu {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url(img/shanchu.png) no-repeat;
+    font: 12px/15px Simsun,Arial, Helvetica, sans-serif;
+    margin: 2px 4px;
+    cursor: pointer;
+}
+
+.shuaxin {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url(img/shuaxin.png) no-repeat;
+    font: 12px/15px Simsun,Arial, Helvetica, sans-serif;
+    margin: 2px 4px;
+    cursor: pointer;
+}
+
+.bianji {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url(img/bianji.png) no-repeat;
+    font: 12px/15px Simsun,Arial, Helvetica, sans-serif;
+    margin: 2px 4px;
+    cursor: pointer;
+}

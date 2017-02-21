@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+        <title>添加编辑广告位-广告位管理-{$site.SITE_INFO.name}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='广告位管理 > 添加编辑角色';
+        </php>
+    <include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div ><a href="__CONTROLLER__/place">广告位列表</a></div>
+                        <div class="current">添加广告位</div>
+                    </div>
+                    <form action="" method="post">
+                        <input name="id" type="hidden" value="{$info['id']}">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">广告位名称：</th>
+                                <td><input name="placename" type="text" class="input" size="20" value="{$info.placename}" /> </td>
+                            </tr>
+                            <tr>
+                                <th>宽：</th>
+                                <td><input class="input text-c" name="w" type="text" size="6" value="{$info.w|default=0}"  /> 单位：px</td>
+                            </tr>
+                            <tr>
+                                <th>高：</th>
+                                <td><input class="input text-c" name="h" type="text" size="6" value="{$info.h|default=0}"  /> 单位：px</td>
+                            </tr>
+
+                            <tr>
+                                <th>显示排序：</th>
+                                <td><input class="input text-c" name="sort" type="text" size="6" value="{$info.sort|default=0}"  /> </td>
+                            </tr>
+
+                        </table>
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        $(".submit").click(function(){
+            commonAjaxSubmit();
+        });
+    });
+</script>
+</body>
+</html>

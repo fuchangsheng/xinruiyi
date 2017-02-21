@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8">
+        <title>添加编辑节点-权限管理-{$Think.config.webname}</title>
+    <php>
+        $addCss="";
+        $addJs="";
+        $currentNav ='权限管理 > 添加编辑节点';
+    </php>
+    <include file="Common:intohead" />
+</head>
+<body>
+    <div class="wrap"> <include file="Common:head" />
+        <div class="mainBody"> <include file="Common:left" />
+            <div id="Right">
+                <div class="contentArea">
+                    <div class="Item hr">
+                        <div class="current">添加编辑节点</div>
+                    </div>
+                    <form action="" method="post">
+                        <input name="id" type="hidden" value="{$info.id}">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
+                            <tr>
+                                <th width="120">名称：</th>
+                                <td><input name="title" type="text" class="input" size="40" value="{$info.title}" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">规则：</th>
+                                <td><input name="name" type="text" class="input" size="40" value="{$info.name}" /></td>
+                            </tr>
+                            <tr>
+                                <th width="120">条件：</th>
+                                <td><input name="condition" type="text" class="input" size="40" value="{$info.condition}" /></td>
+                            </tr>
+                            <tr>
+                                <th>状态：</th>
+                                <td>
+                                    <label><input name="status" type="radio" value="1" checked="">启用</label>
+                                    <label><input name="status" type="radio" value="0" <eq name="info['status']" value="0"> checked="" </eq>>禁用</label>
+                                </td>
+                            </tr>
+
+
+                        </table>
+                        <input type="hidden" name="id" value="{$info.id}"/>
+                    </form>
+                    <div class="commonBtnArea" >
+                        <button class="btn submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+<include file="Common:foot" />
+<script type="text/javascript">
+    $(function(){
+        $("select[name='level']").change(function(){
+            var level=$(this).val();
+            $("select[name='pid']>option").attr("disabled","disabled");
+            if(level==1){
+                $("select[name='pid']>option[value='0']").removeAttr("disabled").attr("selected","selected");
+            }else if(level==2){
+                $("select[name='pid']>option[level='1']").removeAttr("disabled");
+            }else{
+                $("select[name='pid']>option[level='2']").removeAttr("disabled");
+            }
+        });
+
+        $(".submit").click(function(){
+            commonAjaxSubmit();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<script src="__PUBLIC__/Js/zoom/zoom.js"></script>
+<script>
+	document.querySelector( '#main' ).addEventListener( 'dblclick', function( event ) {
+			event.preventDefault();
+			zoom.to({ element: event.target });
+	} );
+</script>

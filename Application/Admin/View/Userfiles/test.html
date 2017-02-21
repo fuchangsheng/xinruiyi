@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Uploadify批量上传</title>
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.9.0.min.js"></script>
+<script src="__PUBLIC__/Plugins/Uploadify/jquery.uploadify-3.1.min.js"></script>
+<link href="__PUBLIC__/Plugins/Uploadify/uploadify.css" rel="stylesheet">
+
+<style>
+.imagelist{}
+.imagelist li{
+    background: none repeat scroll 0 0 #F0F0F0;
+    border: 1px solid #E0E0E0;
+    display: inline;
+    float: left;
+	margin-right:10px;
+	margin-top:5px;
+    padding: 11px;
+    width: 160px;
+	height:220px;
+	overflow:hidden;
+	position: relative;
+
+}
+.imagelist li em{
+    color: #999999;
+    display: block;
+    line-height: 18px;
+    padding: 8px 0px;
+}
+
+.imagelist li span.txt {
+    color: #FFFFFF;
+    display: block;
+    left: 11px;
+    line-height:25px;
+	height:25px;
+    bottom: 41px;
+    width: 160px;
+	opacity: 0.7;
+}
+.imagelist li span a.actbut{float:left;width:24px; height:24px; margin-top:3px;}
+</style>
+</head>
+
+<body>
+    <div class="data_grid" style=" width:95%;float:left;padding:10px 20px 20px">
+        <div class="even">
+            <h5 style="float:left">附件上传：</h5>
+            <div style="width:150px; float:left; margin-top:15px;"><a style="float:right" id="upload"></a></div>
+            <pre id="progress" style="margin-top:20px; float:left;"></pre>
+        </div>
+        <div style="clear:both"></div>
+        <div style=" margin-left:30px;">
+            <p>
+				<ul class="imagelist" id="image_result"></ul>
+            </p>
+        </div>
+        <div class="clear"></div>
+        <div><input name="" type="button" value="上传" id="uploadButton"></div>
+    </div>
+
+    <div class="clear"></div>
+
+</body>
+</html>
+
+<script>
+<?php $timestamp = time();?>
+$(function(){
+	$("#upload").uploadify({
+		height        : 30,
+		swf           : '__PUBLIC__/Plugins/Uploadify/uploadify.swf',
+		//uploader      : '__PUBLIC__/Plugins/Uploadify/uploadify.php',
+		uploader      : '__APP__/Userfiles/upload',
+		width         : 120,
+		buttonText	  : '选择文件',
+		auto		  : false,
+		removeCompleted: false,
+		'formData'     : {
+				'timestamp' : '<?php echo $timestamp;?>',
+				'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+			},
+		onUploadSuccess: function(file, data, response) {
+			//alert('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
+			//var result = data;
+
+			$('#progress').hide();
+			var result = $.parseJSON(data);
+
+			//错误处理。。。
+			if(result.status == 0){
+				alert(result.message);
+				return false;
+			}
+
+
+			//上传成功
+			var id = Math.random().toString();
+			id = id.replace('.','_'); //生成唯一标示
+			var html = '<li class="imageitem" id="'+id+'">';
+				html+= '<input type="hidden" name="file[]" value="'+result.path+'">'; //隐藏域，是为了把图片地址入库。。
+				html+= '<img height="160" width="160" src="'+result.path+'" />';
+				html+=  '<span class="txt">';
+				html+=  '<a title="删除" href=javascript:remove("'+result.path+'","'+id+'");><img src="__PUBLIC__/Plugins/Uploadify/remove.png" /></a>';
+				html+=  '<a title="移动" href=javascript:toremove("'+result.path+'");><img src="__PUBLIC__/Plugins/Uploadify/right.png" /></a>';
+				html+=  '</span>';
+				html+=  '<em><textarea style=" height:20px;width:155px;">'+file.name+'</textarea></em>';
+				html+=  '</li>';
+			$('#image_result').append(html);
+		},
+		onUploadStart: function(){
+			$('#progress').text('正在上传...');  //用户等待提示。
+		},
+		onInit: function (){
+			$("#upload-queue").hide(); //隐藏上传队列
+		}
+	});
+})
+function remove(file,id){
+	$.get("test.cgi", { name: "John", time: "2pm" },
+		  function(data){
+		    alert("Data Loaded: " + data);
+		  });
+	//alert('方法写这里了，逻辑自己写。。'+"\r\n"+file);
+	$('#'+id).remove();
+}
+function toremove(file){
+	//alert('方法写这里了，逻辑自己写。。'+"\r\n"+file);
+}
+</script>

@@ -1,0 +1,5 @@
+[ 2017-02-21T17:36:44+08:00 ] 127.0.0.1 /admin.php/index/cache/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>友情链接管理-板块管理-后台管理首页-{$Think.config.webname}</title>
+        <php>
+            $addCss="";
+            $addJs="";
+            $currentNav ='友情链接管理 > 板块管理 > 导航管理';
+        </php>
+        <include file="Common:intohead" />
+    </head>
+    <body>
+        <div class="wrap">
+            <include file="Common:head" />
+            <div class="mainBody">
+                <include file="Common:left" />
+                <div id="Right">
+                    <div class="Item hr">
+                        <div class="current">友情链接管理</div>
+                    </div>
+
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="tab">
+                        <thead>
+                            <tr align="center">
+                                <td width="10%">ID</td>
+                                <td width="10%">链接名称</td>
+
+                                <td width="20%" align="left">URL</td>
+                                <td width="5%">排序</td>
+                                <td width="10%">状态</td>
+                                <td width="10%">操作</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="list" id="vo">
+                                <tr  id="{$vo.id}">
+                                    <td width="10%" align="center">{$vo.id}<input type="hidden" name="id" value="{$vo.id}"/></td>
+                                    <td width="10%"><input type="text" value="{$vo.name}" name="name" class="input" placeholder="链接名称"/></td>
+                                    <td width="20%">
+                                        <input type="text" value="{$vo.url}" name="url" class="input" placeholder="导航跳转地址"/>
+                                    </td>
+                                    <td width="5%">
+                                        <input type="text" value="{$vo.sort}" name="sort" class="input" style="width:20px; text-aign:center;" />
+                                    </td>
+                                    <td align="center" width="10%"><a href="javascript:void(0)" class="status" name="{$vo.id}">{$vo['status']?'显示':'隐藏'}</a></td>
+                                    <td align="center" width="10%"><button class="btn opCat">确定</button></td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form action="" method="post" id="opForm">
+            <input id="act" type="hidden" name="act" value="act" />
+            <input id="id" type="hidden" name="data[id]" />
+            <input id="name" type="hidden" name="data[name]" />
+            <input id="url" type="hidden" name="data[url]" />
+            <input id="sort" type="hidden" name="data[sort]" />
+        </form>
+        <div class="clear"></div>
+        <include file="Common:foot" />
+        <script type="text/javascript">
+            $(function(){
+                $(".opCat").click(function(){
+                    var obj=$(this).parents("tr");
+                    $("#act").val('edit');
+                    $("#id").val(obj.find("input[name='id']").val());
+                    $("#name").val(obj.find("input[name='name']").val());
+                    $("#url").val(obj.find("input[name='url']").val());
+					$("#sort").val(obj.find("input[name='sort']").val());
+
+                    if($("#act").val()=="del"){
+                        popup.confirm('你真的打算删除该导航吗?','温馨提示',function(action){
+                            if(action == 'ok'){
+                                commonAjaxSubmit("","#opForm");
+                            }
+                        });
+                        return false;
+                    }
+                    commonAjaxSubmit("","#opForm");
+                });
+
+
+                $(".status").click(function(event) {
+                    var text = $(this).text();
+                    var id = $(this).attr('name');
+
+                    if(text=='显示'){
+                        var status = 0;
+                        $(this).text('隐藏');
+                    }else{
+                        var status = 1;
+                        $(this).text('显示');
+                    }
+                    $.get("__URL__/changeStatus", { status: status,id: id},
+                      function(data){
+
+                      });
+                });
+            });
+        </script>
+    </body>
+</html>
