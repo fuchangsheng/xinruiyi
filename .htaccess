@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^TRACE
+RewriteRule .* - [F]
+
+#RewriteCond %{http_host} ^www.liqingbo.cn [NC]
+#RewriteRule ^(.*)$ http://liqingbo.cn/$1 [L,R=301]
+
+
+#RewriteLog "rewrite.log"
+#public目录,sys目录...,不进行重写
+RewriteCond %{REQUEST_URI} !^(/public(.*)|/Public(.*)|/sys(.*)|/Themes(.*))$
+#这些后缀的文件，不进行RewriteRule
+RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.gif|\.png|\.jpg|\.jpeg|\.bmp)$ 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f 
+#RewriteBase /index.php
+RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+
+
+RewriteRule /news/show-([0-9]+) /News/show/id/$1
+RewriteRule /news/list-([0-9]+) /News/index/cid/$1
+
+RewriteRule /product/show-([0-9]+) /product/show/id/$1
+RewriteRule /product/list-([0-9]+) /product/index/cid/$1
+
+
+RewriteRule /special/show-([0-9]+) /Special/show/id/$1
+RewriteRule /special/list-([0-9]+) /Special/index/cid/$1
+
+RewriteRule /case/show-([0-9]+) /case/show/id/$1
+RewriteRule /case/list-([0-9]+) /case/index/cid/$1
+
+RewriteRule /singlepage/show-([0-9]+) /Singlepage/show/id/$1
+
+ErrorDocument 404 /404.html
+order deny,allow
+</IfModule>
